@@ -75,6 +75,11 @@
       background: #1d4ed8;
     }
 
+    button:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+
     .botao-sair {
       background: #dc2626;
       float: right;
@@ -82,6 +87,15 @@
 
     .botao-sair:hover {
       background: #b91c1c;
+    }
+
+    .botao-limpar {
+      background: #6b7280;
+      margin-top: 7px;
+    }
+
+    .botao-limpar:hover {
+      background: #4b5563;
     }
 
     .erro {
@@ -97,6 +111,37 @@
     .topo {
       overflow: hidden;
       margin-bottom: 25px;
+    }
+
+    .pesquisa {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .pesquisa-titulo {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    .pesquisa-linha {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .pesquisa-linha input {
+      margin: 0;
+      flex: 1;
+    }
+
+    .contador {
+      margin-top: 12px;
+      color: #6b7280;
+      font-size: 14px;
     }
 
     .tabela-container {
@@ -143,6 +188,24 @@
       font-weight: bold;
       background: #dcfce7;
       color: #166534;
+    }
+
+    @media (max-width: 600px) {
+
+      .container {
+        margin: 15px;
+        padding: 20px;
+      }
+
+      .pesquisa-linha {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .botao-limpar {
+        width: 100%;
+      }
+
     }
 
   </style>
@@ -227,8 +290,49 @@
       </h1>
 
       <p>
-        Aqui estão os resultados registrados no teste.
+        Consulte os resultados registrados no teste.
       </p>
+
+    </div>
+
+
+    <!-- ================================
+         PESQUISA
+         ================================= -->
+
+    <div class="pesquisa">
+
+      <label
+        class="pesquisa-titulo"
+        for="pesquisaNome"
+      >
+        Pesquisar candidato por nome
+      </label>
+
+      <div class="pesquisa-linha">
+
+        <input
+          type="text"
+          id="pesquisaNome"
+          placeholder="Digite o nome do candidato..."
+          oninput="filtrarResultados()"
+        >
+
+        <button
+          class="botao-limpar"
+          onclick="limparPesquisa()"
+        >
+          Limpar
+        </button>
+
+      </div>
+
+      <div
+        id="contador"
+        class="contador"
+      >
+        Carregando...
+      </div>
 
     </div>
 
@@ -300,6 +404,13 @@ const SUPABASE_URL =
 
 const SUPABASE_KEY =
   "sb_publishable_QAHvlE6BbMgm5nc9WzYJEQ_7f_YvkrU";
+
+
+/* =====================================================
+   VARIÁVEIS
+   ===================================================== */
+
+let todosResultados = [];
 
 
 /* =====================================================
@@ -502,146 +613,22 @@ async function carregarResultados(
     }
 
 
-    const tabela =
-      document.getElementById(
-        "resultados"
-      );
+    /*
+     * Guardamos todos os resultados
+     * para podermos filtrar localmente.
+     */
 
-
-    tabela.innerHTML =
-      "";
-
-
-    if (
-      !dados ||
-      dados.length === 0
-    ) {
-
-      status.textContent =
-        "Nenhum resultado encontrado.";
-
-      return;
-
-    }
+    todosResultados =
+      Array.isArray(dados)
+        ? dados
+        : [];
 
 
     status.textContent =
       "";
 
 
-    dados.forEach(
-      function(tentativa) {
-
-        const linha =
-          document.createElement(
-            "tr"
-          );
-
-
-        const nome =
-          tentativa.candidates
-            ? tentativa.candidates.name
-            : "Sem nome";
-
-
-        const total =
-          tentativa.total_questions || 0;
-
-
-        const score =
-          tentativa.score;
-
-
-        let percentual =
-          "—";
-
-
-        if (
-          score !== null &&
-          total > 0
-        ) {
-
-          percentual =
-            Math.round(
-              (score / total) *
-              100
-            ) + "%";
-
-        }
-
-
-        let data =
-          "—";
-
-
-        if (
-          tentativa.finished_at
-        ) {
-
-          data =
-            new Date(
-              tentativa.finished_at
-            ).toLocaleString(
-              "pt-BR"
-            );
-
-        }
-
-
-        let statusTexto =
-          "Em andamento";
-
-
-        if (
-          tentativa.finished_at
-        ) {
-
-          statusTexto =
-            "Concluído";
-
-        }
-
-
-        linha.innerHTML =
-          `
-          <td>
-            ${escaparHTML(nome)}
-          </td>
-
-          <td>
-            ${total}
-          </td>
-
-          <td>
-            ${
-              score === null
-                ? "—"
-                : score
-            }
-          </td>
-
-          <td>
-            ${percentual}
-          </td>
-
-          <td>
-            ${data}
-          </td>
-
-          <td>
-            <span class="badge">
-              ${statusTexto}
-            </span>
-          </td>
-          `;
-
-
-        tabela.appendChild(
-          linha
-        );
-
-      }
-    );
+    filtrarResultados();
 
 
   } catch (erro) {
@@ -652,14 +639,254 @@ async function carregarResultados(
       "Erro ao carregar resultados: " +
       erro.message;
 
+    document.getElementById(
+      "contador"
+    ).textContent =
+      "";
+
   }
 
 }
 
 
 /* =====================================================
+   FILTRAR POR NOME
+   ===================================================== */
+
+function filtrarResultados() {
+
+  const campo =
+    document.getElementById(
+      "pesquisaNome"
+    );
+
+
+  const texto =
+    campo.value
+      .trim()
+      .toLowerCase();
+
+
+  const resultadosFiltrados =
+    todosResultados.filter(
+      function(tentativa) {
+
+        const nome =
+          tentativa.candidates &&
+          tentativa.candidates.name
+            ? tentativa.candidates.name
+            : "Sem nome";
+
+
+        return nome
+          .toLowerCase()
+          .includes(texto);
+
+      }
+    );
+
+
+  mostrarResultados(
+    resultadosFiltrados
+  );
+
+}
+
+
+/* =====================================================
+   MOSTRAR RESULTADOS NA TABELA
+   ===================================================== */
+
+function mostrarResultados(
+  dados
+) {
+
+  const tabela =
+    document.getElementById(
+      "resultados"
+    );
+
+
+  tabela.innerHTML =
+    "";
+
+
+  const contador =
+    document.getElementById(
+      "contador"
+    );
+
+
+  if (
+    dados.length === 0
+  ) {
+
+    contador.textContent =
+      "Nenhum candidato encontrado.";
+
+    tabela.innerHTML =
+      `
+      <tr>
+        <td
+          colspan="6"
+          class="vazio"
+        >
+          Nenhum candidato encontrado.
+        </td>
+      </tr>
+      `;
+
+    return;
+
+  }
+
+
+  contador.textContent =
+    dados.length === 1
+      ? "1 resultado encontrado."
+      : dados.length +
+        " resultados encontrados.";
+
+
+  dados.forEach(
+    function(tentativa) {
+
+      const linha =
+        document.createElement(
+          "tr"
+        );
+
+
+      const nome =
+        tentativa.candidates
+          ? tentativa.candidates.name
+          : "Sem nome";
+
+
+      const total =
+        tentativa.total_questions || 0;
+
+
+      const score =
+        tentativa.score;
+
+
+      let percentual =
+        "—";
+
+
+      if (
+        score !== null &&
+        score !== undefined &&
+        total > 0
+      ) {
+
+        percentual =
+          Math.round(
+            (score / total) *
+            100
+          ) + "%";
+
+      }
+
+
+      let data =
+        "—";
+
+
+      if (
+        tentativa.finished_at
+      ) {
+
+        data =
+          new Date(
+            tentativa.finished_at
+          ).toLocaleString(
+            "pt-BR"
+          );
+
+      }
+
+
+      let statusTexto =
+        "Em andamento";
+
+
+      if (
+        tentativa.finished_at
+      ) {
+
+        statusTexto =
+          "Concluído";
+
+      }
+
+
+      linha.innerHTML =
+        `
+        <td>
+          ${escaparHTML(nome)}
+        </td>
+
+        <td>
+          ${total}
+        </td>
+
+        <td>
+          ${
+            score === null ||
+            score === undefined
+              ? "—"
+              : score
+          }
+        </td>
+
+        <td>
+          ${percentual}
+        </td>
+
+        <td>
+          ${data}
+        </td>
+
+        <td>
+          <span class="badge">
+            ${statusTexto}
+          </span>
+        </td>
+        `;
+
+
+      tabela.appendChild(
+        linha
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   LIMPAR PESQUISA
+   ===================================================== */
+
+function limparPesquisa() {
+
+  document.getElementById(
+    "pesquisaNome"
+  ).value =
+    "";
+
+
+  filtrarResultados();
+
+}
+
+
+/* =====================================================
    ESCAPAR HTML
-   ================================================ */
+   ===================================================== */
 
 function escaparHTML(
   texto
@@ -693,6 +920,10 @@ function sair() {
   );
 
 
+  todosResultados =
+    [];
+
+
   document.getElementById(
     "painel"
   ).style.display =
@@ -713,6 +944,12 @@ function sair() {
 
   document.getElementById(
     "senha"
+  ).value =
+    "";
+
+
+  document.getElementById(
+    "pesquisaNome"
   ).value =
     "";
 
