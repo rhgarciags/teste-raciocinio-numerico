@@ -40,7 +40,7 @@
       line-height: 1.6;
     }
 
-    label {
+    label.nome-label {
       font-weight: bold;
     }
 
@@ -95,6 +95,21 @@
       font-size: 20px;
     }
 
+    .progresso {
+      height: 8px;
+      background: #e5e7eb;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      overflow: hidden;
+    }
+
+    #barraProgresso {
+      height: 100%;
+      width: 2.5%;
+      background: #2563eb;
+      transition: width .2s;
+    }
+
     .alternativa {
       display: block;
       padding: 15px;
@@ -120,19 +135,12 @@
       margin-top: 15px;
     }
 
-    .progresso {
-      height: 8px;
-      background: #e5e7eb;
-      border-radius: 10px;
-      margin-bottom: 25px;
-      overflow: hidden;
-    }
-
-    #barraProgresso {
-      height: 100%;
-      width: 2.5%;
-      background: #2563eb;
-      transition: width .2s;
+    .tipo {
+      color: #2563eb;
+      font-size: 14px;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 5px;
     }
   </style>
 </head>
@@ -142,7 +150,7 @@
 <div class="container">
 
   <!-- ================================
-       INÍCIO
+       TELA INICIAL
        ================================= -->
 
   <section id="inicio">
@@ -161,7 +169,9 @@
       Informe seu nome para começar.
     </p>
 
-    <label for="nome">Nome</label>
+    <label class="nome-label" for="nome">
+      Nome
+    </label>
 
     <input
       type="text"
@@ -187,7 +197,7 @@
 
 
   <!-- ================================
-       TESTE
+       TELA DO TESTE
        ================================= -->
 
   <section id="teste">
@@ -208,6 +218,11 @@
       <div id="barraProgresso"></div>
     </div>
 
+    <div
+      id="tipoQuestao"
+      class="tipo"
+    ></div>
+
     <h2 id="pergunta"></h2>
 
     <div id="alternativas"></div>
@@ -222,7 +237,7 @@
 
 
   <!-- ================================
-       RESULTADO
+       TELA FINAL
        ================================= -->
 
   <section id="resultado" class="centralizar">
@@ -271,251 +286,303 @@ let intervalo = null;
 
 let candidatoId = null;
 
+let tentativaId = null;
+
 
 /* =====================================================
    40 QUESTÕES
+   25 SOMAS + 15 MULTIPLICAÇÕES
    ===================================================== */
 
 const questoes = [
 
-  {
-    pergunta: "Quanto é 15% de 200?",
-    alternativas: ["20", "25", "30", "35"],
-    correta: 2
-  },
+  /* ================================
+     SOMAR - 1 a 25
+     ================================= */
 
   {
-    pergunta: "Uma mercadoria custa R$ 80 e recebeu aumento de 25%. Qual é o novo preço?",
-    alternativas: ["R$ 90", "R$ 95", "R$ 100", "R$ 105"],
-    correta: 2
-  },
-
-  {
-    pergunta: "Se 5 produtos custam R$ 100, quanto custam 8 produtos pelo mesmo preço unitário?",
-    alternativas: ["R$ 120", "R$ 140", "R$ 160", "R$ 180"],
-    correta: 2
-  },
-
-  {
-    pergunta: "Qual é o próximo número: 2, 4, 8, 16, ...?",
-    alternativas: ["20", "24", "30", "32"],
-    correta: 3
-  },
-
-  {
-    pergunta: "Qual é 25% de 240?",
-    alternativas: ["40", "50", "60", "70"],
-    correta: 2
-  },
-
-  {
-    pergunta: "Uma empresa tinha 500 funcionários e reduziu o quadro em 10%. Quantos funcionários permaneceram?",
-    alternativas: ["450", "460", "470", "480"],
-    correta: 0
-  },
-
-  {
-    pergunta: "Se 3 máquinas produzem 900 peças em uma hora, quantas peças produzem 5 máquinas no mesmo período?",
-    alternativas: ["1.200", "1.350", "1.500", "1.800"],
-    correta: 2
-  },
-
-  {
-    pergunta: "Qual é a média de 10, 20 e 30?",
-    alternativas: ["15", "20", "25", "30"],
+    tipo: "Somar",
+    pergunta: "36 + 54 + 81 = ?",
+    alternativas: ["161", "171", "181", "191"],
     correta: 1
   },
 
   {
-    pergunta: "Um produto de R$ 200 recebeu desconto de 15%. Qual será o preço final?",
-    alternativas: ["R$ 160", "R$ 165", "R$ 170", "R$ 175"],
-    correta: 2
-  },
-
-  {
-    pergunta: "Qual número completa a sequência: 5, 10, 15, 20, ...?",
-    alternativas: ["22", "24", "25", "30"],
-    correta: 2
-  },
-
-  {
-    pergunta: "Quanto é 3/4 de 100?",
-    alternativas: ["50", "60", "75", "80"],
-    correta: 2
-  },
-
-  {
-    pergunta: "Uma equipe conclui 40 tarefas em 5 dias. Mantendo o mesmo ritmo, quantas tarefas concluirá em 8 dias?",
-    alternativas: ["56", "64", "72", "80"],
+    tipo: "Somar",
+    pergunta: "17 + 52 + 36 = ?",
+    alternativas: ["95", "105", "115", "125"],
     correta: 1
   },
 
   {
-    pergunta: "Quanto é 18% de 500?",
-    alternativas: ["80", "90", "100", "110"],
+    tipo: "Somar",
+    pergunta: "74 + 48 + 82 = ?",
+    alternativas: ["194", "204", "214", "224"],
     correta: 1
   },
 
   {
-    pergunta: "Se 12 funcionários realizam um trabalho em 10 dias, mantendo a mesma produtividade, quantos dias 6 funcionários levariam?",
-    alternativas: ["5", "10", "15", "20"],
-    correta: 3
-  },
-
-  {
-    pergunta: "Qual é o próximo número: 3, 6, 12, 24, ...?",
-    alternativas: ["36", "42", "48", "54"],
-    correta: 2
-  },
-
-  {
-    pergunta: "Uma receita usa 400 g de farinha para 8 porções. Quantos gramas são necessários para 12 porções?",
-    alternativas: ["500 g", "550 g", "600 g", "650 g"],
-    correta: 2
-  },
-
-  {
-    pergunta: "Um salário de R$ 2.000 aumentou 10%. Qual é o novo salário?",
-    alternativas: ["R$ 2.100", "R$ 2.200", "R$ 2.300", "R$ 2.400"],
+    tipo: "Somar",
+    pergunta: "92 + 13 + 58 = ?",
+    alternativas: ["153", "163", "173", "183"],
     correta: 1
   },
 
   {
-    pergunta: "Qual é a diferença entre 850 e 375?",
-    alternativas: ["425", "450", "475", "500"],
-    correta: 2
-  },
-
-  {
-    pergunta: "Se um carro percorre 240 km com 20 litros, quantos quilômetros percorre por litro?",
-    alternativas: ["10", "12", "14", "16"],
+    tipo: "Somar",
+    pergunta: "65 + 74 + 49 = ?",
+    alternativas: ["178", "188", "198", "208"],
     correta: 1
   },
 
   {
-    pergunta: "Qual é 40% de 350?",
-    alternativas: ["120", "130", "140", "150"],
-    correta: 2
-  },
-
-  {
-    pergunta: "Uma loja vendeu 120 unidades na segunda-feira e 180 na terça. Qual foi o aumento percentual?",
-    alternativas: ["25%", "40%", "50%", "60%"],
-    correta: 2
-  },
-
-  {
-    pergunta: "Qual é o próximo número: 100, 90, 80, 70, ...?",
-    alternativas: ["50", "55", "60", "65"],
-    correta: 2
-  },
-
-  {
-    pergunta: "Se 4 caixas contêm 96 produtos, quantos produtos existem em 7 caixas iguais?",
-    alternativas: ["144", "156", "168", "192"],
-    correta: 2
-  },
-
-  {
-    pergunta: "Quanto é 2,5 × 20?",
-    alternativas: ["40", "45", "50", "55"],
-    correta: 2
-  },
-
-  {
-    pergunta: "Uma empresa faturou R$ 50.000 e gastou R$ 35.000. Qual foi o lucro?",
-    alternativas: ["R$ 10.000", "R$ 12.000", "R$ 15.000", "R$ 18.000"],
-    correta: 2
-  },
-
-  {
-    pergunta: "Qual é 30% de 450?",
-    alternativas: ["125", "135", "145", "155"],
+    tipo: "Somar",
+    pergunta: "16 + 87 + 57 = ?",
+    alternativas: ["150", "160", "170", "180"],
     correta: 1
   },
 
   {
-    pergunta: "Se 8 trabalhadores produzem 1.600 unidades, quantas unidades 10 trabalhadores produziriam no mesmo ritmo?",
-    alternativas: ["1.800", "2.000", "2.200", "2.400"],
+    tipo: "Somar",
+    pergunta: "67 + 23 + 86 = ?",
+    alternativas: ["166", "176", "186", "196"],
     correta: 1
   },
 
   {
-    pergunta: "Um número aumentado em 20% resulta em 120. Qual era o número original?",
-    alternativas: ["90", "100", "110", "115"],
+    tipo: "Somar",
+    pergunta: "27 + 18 + 44 = ?",
+    alternativas: ["79", "89", "99", "109"],
     correta: 1
   },
 
   {
-    pergunta: "Qual é a média de 15, 25, 35 e 45?",
-    alternativas: ["25", "30", "35", "40"],
+    tipo: "Somar",
+    pergunta: "66 + 87 + 34 = ?",
+    alternativas: ["177", "187", "197", "207"],
     correta: 1
   },
 
   {
-    pergunta: "Uma empresa reduziu um preço de R$ 500 para R$ 425. Qual foi o percentual de desconto?",
-    alternativas: ["10%", "12%", "15%", "20%"],
-    correta: 2
-  },
-
-  {
-    pergunta: "Qual número completa a sequência: 4, 9, 14, 19, ...?",
-    alternativas: ["22", "23", "24", "25"],
-    correta: 2
-  },
-
-  {
-    pergunta: "Se 6 livros custam R$ 180, quanto custam 10 livros iguais?",
-    alternativas: ["R$ 250", "R$ 280", "R$ 300", "R$ 320"],
-    correta: 2
-  },
-
-  {
-    pergunta: "Quanto é 12,5% de 400?",
-    alternativas: ["40", "50", "60", "70"],
+    tipo: "Somar",
+    pergunta: "55 + 74 + 19 = ?",
+    alternativas: ["138", "148", "158", "168"],
     correta: 1
   },
 
   {
-    pergunta: "Uma população passou de 2.000 para 2.400 pessoas. Qual foi o crescimento percentual?",
-    alternativas: ["10%", "15%", "20%", "25%"],
-    correta: 2
-  },
-
-  {
-    pergunta: "Se uma pessoa economiza R$ 150 por mês, quanto economizará em 8 meses?",
-    alternativas: ["R$ 900", "R$ 1.000", "R$ 1.200", "R$ 1.500"],
-    correta: 2
-  },
-
-  {
-    pergunta: "Qual é o próximo número: 81, 27, 9, 3, ...?",
-    alternativas: ["0", "1", "2", "4"],
+    tipo: "Somar",
+    pergunta: "88 + 13 + 71 = ?",
+    alternativas: ["162", "172", "182", "192"],
     correta: 1
   },
 
   {
-    pergunta: "Um investimento de R$ 1.000 rendeu 8%. Qual foi o rendimento?",
-    alternativas: ["R$ 60", "R$ 70", "R$ 80", "R$ 90"],
-    correta: 2
-  },
-
-  {
-    pergunta: "Se 2 funcionários fazem um trabalho em 12 horas, quantas horas seriam necessárias para 4 funcionários, mantendo a mesma produtividade?",
-    alternativas: ["3", "4", "6", "8"],
-    correta: 2
-  },
-
-  {
-    pergunta: "Qual é 35% de 200?",
-    alternativas: ["60", "65", "70", "75"],
-    correta: 2
-  },
-
-  {
-    pergunta: "Um produto de R$ 150 passou a custar R$ 180. Qual foi o aumento percentual?",
-    alternativas: ["15%", "20%", "25%", "30%"],
+    tipo: "Somar",
+    pergunta: "95 + 21 + 92 = ?",
+    alternativas: ["198", "208", "218", "228"],
     correta: 1
+  },
+
+  {
+    tipo: "Somar",
+    pergunta: "32 + 99 + 75 = ?",
+    alternativas: ["196", "206", "216", "226"],
+    correta: 1
+  },
+
+  {
+    tipo: "Somar",
+    pergunta: "49 + 61 + 83 = ?",
+    alternativas: ["183", "193", "203", "213"],
+    correta: 1
+  },
+
+  {
+    tipo: "Somar",
+    pergunta: "95 + 59 + 93 = ?",
+    alternativas: ["237", "247", "257", "267"],
+    correta: 1
+  },
+
+  {
+    tipo: "Somar",
+    pergunta: "71 + 25 + 63 = ?",
+    alternativas: ["149", "159", "169", "179"],
+    correta: 1
+  },
+
+  {
+    tipo: "Somar",
+    pergunta: "63 + 71 + 45 = ?",
+    alternativas: ["169", "179", "189", "199"],
+    correta: 1
+  },
+
+  {
+    tipo: "Somar",
+    pergunta: "47 + 84 + 28 = ?",
+    alternativas: ["149", "159", "169", "179"],
+    correta: 1
+  },
+
+  {
+    tipo: "Somar",
+    pergunta: "19 + 27 + 43 = ?",
+    alternativas: ["79", "89", "99", "109"],
+    correta: 1
+  },
+
+  {
+    tipo: "Somar",
+    pergunta: "34 + 92 + 26 = ?",
+    alternativas: ["142", "152", "162", "172"],
+    correta: 1
+  },
+
+  {
+    tipo: "Somar",
+    pergunta: "67 + 86 + 35 = ?",
+    alternativas: ["178", "188", "198", "208"],
+    correta: 1
+  },
+
+  {
+    tipo: "Somar",
+    pergunta: "19 + 68 + 77 = ?",
+    alternativas: ["154", "164", "174", "184"],
+    correta: 1
+  },
+
+  {
+    tipo: "Somar",
+    pergunta: "82 + 36 + 49 = ?",
+    alternativas: ["157", "167", "177", "187"],
+    correta: 1
+  },
+
+  {
+    tipo: "Somar",
+    pergunta: "91 + 13 + 38 = ?",
+    alternativas: ["132", "142", "152", "162"],
+    correta: 1
+  },
+
+  {
+    tipo: "Somar",
+    pergunta: "63 + 21 + 75 = ?",
+    alternativas: ["149", "159", "169", "179"],
+    correta: 1
+  },
+
+
+  /* ================================
+     MULTIPLICAR - 26 a 40
+     ================================= */
+
+  {
+    tipo: "Multiplicar",
+    pergunta: "3.314 × 2 = ?",
+    alternativas: ["6.528", "6.628", "6.728", "6.828"],
+    correta: 1
+  },
+
+  {
+    tipo: "Multiplicar",
+    pergunta: "5.042 × 3 = ?",
+    alternativas: ["15.026", "15.126", "15.226", "15.326"],
+    correta: 1
+  },
+
+  {
+    tipo: "Multiplicar",
+    pergunta: "8.542 × 4 = ?",
+    alternativas: ["33.168", "34.168", "35.168", "36.168"],
+    correta: 1
+  },
+
+  {
+    tipo: "Multiplicar",
+    pergunta: "6.273 × 7 = ?",
+    alternativas: ["42.911", "43.911", "44.911", "45.911"],
+    correta: 1
+  },
+
+  {
+    tipo: "Multiplicar",
+    pergunta: "8.056 × 9 = ?",
+    alternativas: ["71.504", "72.504", "73.504", "74.504"],
+    correta: 1
+  },
+
+  {
+    tipo: "Multiplicar",
+    pergunta: "1.976 × 6 = ?",
+    alternativas: ["11.756", "11.856", "11.956", "12.056"],
+    correta: 1
+  },
+
+  {
+    tipo: "Multiplicar",
+    pergunta: "5.062 × 5 = ?",
+    alternativas: ["24.310", "25.310", "26.310", "27.310"],
+    correta: 1
+  },
+
+  {
+    tipo: "Multiplicar",
+    pergunta: "2.671 × 8 = ?",
+    alternativas: ["20.368", "21.368", "22.368", "23.368"],
+    correta: 1
+  },
+
+  {
+    tipo: "Multiplicar",
+    pergunta: "3.892 × 6 = ?",
+    alternativas: ["22.352", "23.352", "24.352", "25.352"],
+    correta: 1
+  },
+
+  {
+    tipo: "Multiplicar",
+    pergunta: "8.709 × 7 = ?",
+    alternativas: ["59.963", "60.963", "61.963", "62.963"],
+    correta: 1
+  },
+
+  {
+    tipo: "Multiplicar",
+    pergunta: "4.976 × 4 = ?",
+    alternativas: ["18.904", "19.904", "20.904", "21.904"],
+    correta: 1
+  },
+
+  {
+    tipo: "Multiplicar",
+    pergunta: "1.892 × 9 = ?",
+    alternativas: ["16.028", "17.028", "18.028", "19.028"],
+    correta: 1
+  },
+
+  {
+    tipo: "Multiplicar",
+    pergunta: "2.764 × 5 = ?",
+    alternativas: ["12.820", "13.820", "14.820", "15.820"],
+    correta: 1
+  },
+
+  {
+    tipo: "Multiplicar",
+    pergunta: "3.158 × 8 = ?",
+    alternativas: ["24.264", "25.264", "26.264", "27.264"],
+    correta: 1
+  },
+
+  {
+    tipo: "Multiplicar",
+    pergunta: "9.246 × 9 = ?",
+    alternativas: ["81.214", "82.214", "83.214", "84.214"],
+    correta: 2
   }
 
 ];
@@ -530,7 +597,8 @@ async function iniciarTeste() {
   const campoNome =
     document.getElementById("nome");
 
-  nome = campoNome.value.trim();
+  nome =
+    campoNome.value.trim();
 
 
   if (!nome) {
@@ -544,7 +612,9 @@ async function iniciarTeste() {
 
 
   const botao =
-    document.getElementById("botaoIniciar");
+    document.getElementById(
+      "botaoIniciar"
+    );
 
   botao.disabled = true;
 
@@ -556,87 +626,183 @@ async function iniciarTeste() {
 
   try {
 
-    /*
-     * ENVIA O NOME PARA O SUPABASE
-     */
+    /* -----------------------------------------------
+       1. CADASTRA O CANDIDATO
+       ----------------------------------------------- */
 
-    const resposta = await fetch(
-      SUPABASE_URL + "/rest/v1/candidates",
-      {
-        method: "POST",
+    const respostaCandidato =
+      await fetch(
+        SUPABASE_URL +
+        "/rest/v1/candidates",
+        {
+          method: "POST",
 
-        headers: {
-          "apikey": SUPABASE_KEY,
-          "Authorization": "Bearer " + SUPABASE_KEY,
-          "Content-Type": "application/json",
-          "Prefer": "return=representation"
-        },
+          headers: {
+            "apikey": SUPABASE_KEY,
+            "Authorization":
+              "Bearer " + SUPABASE_KEY,
+            "Content-Type":
+              "application/json",
+            "Prefer":
+              "return=representation"
+          },
 
-        body: JSON.stringify({
-          name: nome
-        })
-      }
-    );
-
-
-    const texto =
-      await resposta.text();
-
-
-    if (!resposta.ok) {
-
-      console.error(
-        "Erro Supabase:",
-        resposta.status,
-        texto
+          body: JSON.stringify({
+            name: nome
+          })
+        }
       );
+
+
+    const textoCandidato =
+      await respostaCandidato.text();
+
+
+    if (!respostaCandidato.ok) {
 
       throw new Error(
-        "Supabase " +
-        resposta.status +
-        ": " +
-        texto
+        "Erro ao cadastrar candidato: " +
+        respostaCandidato.status +
+        " - " +
+        textoCandidato
       );
+
     }
 
 
-    let dados = null;
+    let dadosCandidato;
 
     try {
 
-      dados =
-        JSON.parse(texto);
+      dadosCandidato =
+        JSON.parse(textoCandidato);
 
     } catch (e) {
 
-      dados = null;
+      throw new Error(
+        "O Supabase não retornou os dados do candidato."
+      );
 
     }
 
 
     if (
-      Array.isArray(dados) &&
-      dados.length > 0
+      !Array.isArray(dadosCandidato) ||
+      dadosCandidato.length === 0
     ) {
 
-      candidatoId =
-        dados[0].id;
+      throw new Error(
+        "O candidato foi enviado, mas o ID não foi retornado."
+      );
 
     }
 
 
-    /*
-     * COMEÇA O TESTE
-     */
+    candidatoId =
+      dadosCandidato[0].id;
+
+
+    /* -----------------------------------------------
+       2. CRIA A TENTATIVA
+       ----------------------------------------------- */
+
+    mostrarMensagem(
+      "Criando tentativa..."
+    );
+
+
+    const respostaTentativa =
+      await fetch(
+        SUPABASE_URL +
+        "/rest/v1/attempts",
+        {
+          method: "POST",
+
+          headers: {
+            "apikey": SUPABASE_KEY,
+            "Authorization":
+              "Bearer " + SUPABASE_KEY,
+            "Content-Type":
+              "application/json",
+            "Prefer":
+              "return=representation"
+          },
+
+          body: JSON.stringify({
+
+            candidate_id:
+              candidatoId,
+
+            total_questions:
+              40
+
+          })
+        }
+      );
+
+
+    const textoTentativa =
+      await respostaTentativa.text();
+
+
+    if (!respostaTentativa.ok) {
+
+      throw new Error(
+        "Candidato foi registrado, mas a tentativa não pôde ser criada: " +
+        respostaTentativa.status +
+        " - " +
+        textoTentativa
+      );
+
+    }
+
+
+    let dadosTentativa;
+
+    try {
+
+      dadosTentativa =
+        JSON.parse(textoTentativa);
+
+    } catch (e) {
+
+      throw new Error(
+        "A tentativa foi criada, mas o ID não foi retornado."
+      );
+
+    }
+
+
+    if (
+      !Array.isArray(dadosTentativa) ||
+      dadosTentativa.length === 0
+    ) {
+
+      throw new Error(
+        "A tentativa foi criada, mas não conseguimos obter o ID."
+      );
+
+    }
+
+
+    tentativaId =
+      dadosTentativa[0].id;
+
+
+    /* -----------------------------------------------
+       3. COMEÇA O TESTE
+       ----------------------------------------------- */
 
     document.getElementById(
       "inicio"
-    ).style.display = "none";
+    ).style.display =
+      "none";
 
 
     document.getElementById(
       "teste"
-    ).style.display = "block";
+    ).style.display =
+      "block";
 
 
     questaoAtual = 0;
@@ -657,31 +823,23 @@ async function iniciarTeste() {
         1000
       );
 
-  }
 
-  catch (erro) {
+  } catch (erro) {
 
     console.error(erro);
 
 
-    mostrarMensagem(
-      "Não foi possível iniciar o teste."
-    );
-
-
-    /*
-     * Mostra o erro real na tela.
-     * Isso nos permitirá corrigir exatamente
-     * o problema caso ainda exista.
-     */
-
     alert(
-      "Erro ao conectar ao Supabase:\n\n" +
       erro.message
     );
 
 
     botao.disabled = false;
+
+
+    mostrarMensagem(
+      ""
+    );
 
   }
 
@@ -707,6 +865,12 @@ function mostrarQuestao() {
 
 
   document.getElementById(
+    "tipoQuestao"
+  ).textContent =
+    questao.tipo;
+
+
+  document.getElementById(
     "pergunta"
   ).textContent =
     questao.pergunta;
@@ -718,14 +882,20 @@ function mostrarQuestao() {
     );
 
 
-  alternativas.innerHTML = "";
+  alternativas.innerHTML =
+    "";
 
 
   questao.alternativas.forEach(
-    function(alternativa, indice) {
+    function(
+      alternativa,
+      indice
+    ) {
 
       const label =
-        document.createElement("label");
+        document.createElement(
+          "label"
+        );
 
 
       label.className =
@@ -739,19 +909,21 @@ function mostrarQuestao() {
           name="resposta"
           value="${indice}"
         >
-
         ${alternativa}
         `;
 
 
-      alternativas.appendChild(label);
+      alternativas.appendChild(
+        label
+      );
 
     }
   );
 
 
   const percentual =
-    ((questaoAtual + 1) / 40) * 100;
+    ((questaoAtual + 1) / 40) *
+    100;
 
 
   document.getElementById(
@@ -781,6 +953,7 @@ function proximaQuestao() {
     );
 
     return;
+
   }
 
 
@@ -800,6 +973,7 @@ function proximaQuestao() {
     finalizarTeste();
 
     return;
+
   }
 
 
@@ -827,16 +1001,25 @@ function atualizarCronometro() {
   document.getElementById(
     "cronometro"
   ).textContent =
-    String(minutos).padStart(2, "0") +
+    String(minutos).padStart(
+      2,
+      "0"
+    ) +
     ":" +
-    String(segundos).padStart(2, "0");
+    String(segundos).padStart(
+      2,
+      "0"
+    );
 
 
-  if (tempoRestante <= 0) {
+  if (
+    tempoRestante <= 0
+  ) {
 
     finalizarTeste();
 
     return;
+
   }
 
 
@@ -846,28 +1029,125 @@ function atualizarCronometro() {
 
 
 /* =====================================================
-   FINALIZAR
+   FINALIZAR TESTE
    ===================================================== */
 
-function finalizarTeste() {
+async function finalizarTeste() {
 
   if (intervalo) {
 
-    clearInterval(intervalo);
+    clearInterval(
+      intervalo
+    );
 
     intervalo = null;
 
   }
 
 
+  /* CALCULA OS ACERTOS */
+
+  let acertos = 0;
+
+
+  respostas.forEach(
+    function(
+      resposta,
+      indice
+    ) {
+
+      if (
+        resposta ===
+        questoes[indice].correta
+      ) {
+
+        acertos++;
+
+      }
+
+    }
+  );
+
+
+  /* -----------------------------------------------
+     ATUALIZA A TENTATIVA
+     ----------------------------------------------- */
+
+  if (tentativaId) {
+
+    try {
+
+      const resposta =
+        await fetch(
+          SUPABASE_URL +
+          "/rest/v1/attempts?id=eq." +
+          encodeURIComponent(
+            tentativaId
+          ),
+          {
+            method: "PATCH",
+
+            headers: {
+              "apikey":
+                SUPABASE_KEY,
+
+              "Authorization":
+                "Bearer " +
+                SUPABASE_KEY,
+
+              "Content-Type":
+                "application/json"
+            },
+
+            body: JSON.stringify({
+
+              score:
+                acertos,
+
+              finished_at:
+                new Date()
+                  .toISOString()
+
+            })
+          }
+        );
+
+
+      if (!resposta.ok) {
+
+        console.error(
+          "Erro ao atualizar tentativa:",
+          await resposta.text()
+        );
+
+      }
+
+    } catch (erro) {
+
+      console.error(
+        "Erro ao finalizar:",
+        erro
+      );
+
+    }
+
+  }
+
+
+  /* -----------------------------------------------
+     MOSTRA TELA FINAL
+     ----------------------------------------------- */
+
   document.getElementById(
     "teste"
-  ).style.display = "none";
+  ).style.display =
+    "none";
 
 
   document.getElementById(
     "resultado"
-  ).style.display = "block";
+  ).style.display =
+    "block";
 
 }
 
@@ -880,7 +1160,8 @@ function mostrarMensagem(texto) {
 
   document.getElementById(
     "mensagem"
-  ).textContent = texto;
+  ).textContent =
+    texto;
 
 }
 
