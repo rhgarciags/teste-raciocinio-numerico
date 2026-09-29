@@ -440,8 +440,13 @@ async function iniciarTeste() {
     console.error(erro);
 
 
-    alert(
-      "Não foi possível iniciar o teste. Verifique a configuração do Supabase."
+  alert(
+  "ERRO SUPABASE:\n\n" +
+  erro.message +
+  "\n\nDetalhes:\n" +
+  JSON.stringify(erro, null, 2)
+);
+
     );
 
 
