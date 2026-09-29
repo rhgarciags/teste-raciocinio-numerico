@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Teste de Raciocínio Numérico</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      color: #222;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 50px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin: 10px 0 20px;
+    }
+
+    button {
+      background: #2563eb;
+      color: white;
+      border: 0;
+      padding: 14px 22px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    #teste,
+    #resultado {
+      display: none;
+    }
+
+    .topo {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+      font-weight: bold;
+    }
+
+    .alternativa {
+      display: block;
+      margin: 12px 0;
+      padding: 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .alternativa:hover {
+      background: #f0f4ff;
+    }
+
+    .alternativa input {
+      width: auto;
+      margin: 0 10px 0 0;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- TELA INICIAL -->
+
+  <div id="inicio">
+
+    <h1>Teste de Raciocínio Numérico</h1>
+
+    <p>
+      Você terá 5 minutos para responder às questões.
+    </p>
+
+    <label>Nome</label>
+
+    <input
+      type="text"
+      id="nome"
+      placeholder="Digite seu nome"
+    >
+
+    <div class="center">
+      <button onclick="iniciarTeste()">
+        Iniciar teste
+      </button>
+    </div>
+
+  </div>
+
+
+  <!-- TESTE -->
+
+  <div id="teste">
+
+    <div class="topo">
+
+      <span id="numeroQuestao">
+        Questão 1 de 40
+      </span>
+
+      <span id="cronometro">
+        05:00
+      </span>
+
+    </div>
+
+    <h2 id="pergunta"></h2>
+
+    <div id="alternativas"></div>
+
+    <br>
+
+    <button onclick="proximaQuestao()">
+      Próxima
+    </button>
+
+  </div>
+
+
+  <!-- RESULTADO -->
+
+  <div id="resultado" class="center">
+
+    <h1>Teste concluído</h1>
+
+    <p>
+      Suas respostas foram registradas.
+    </p>
+
+    <p>
+      O resultado será analisado posteriormente.
+    </p>
+
+  </div>
+
+</div>
+
+
+<script>
+
+const questoes = [
+
+  {
+    pergunta: "Uma empresa vendeu 250 unidades em janeiro e 300 em fevereiro. Qual foi o aumento percentual?",
+    alternativas: ["10%", "15%", "20%", "25%"],
+    correta: 2
+  },
+
+  {
+    pergunta: "Quanto é 15% de 200?",
+    alternativas: ["20", "25", "30", "35"],
+    correta: 2
+  },
+
+  {
+    pergunta: "Se 5 produtos custam R$ 100, quanto custam 8 produtos pelo mesmo preço unitário?",
+    alternativas: ["R$ 120", "R$ 140", "R$ 160", "R$ 180"],
+    correta: 2
+  }
+
+];
+
+
+let nome = "";
+
+let questaoAtual = 0;
+
+let respostas = [];
+
+let tempo = 300;
+
+let intervalo;
+
+
+function iniciarTeste() {
+
+  nome = document.getElementById("nome").value.trim();
+
+  if (!nome) {
+    alert("Digite seu nome para iniciar.");
+    return;
+  }
+
+  document.getElementById("inicio").style.display = "none";
+
+  document.getElementById("teste").style.display = "block";
+
+  mostrarQuestao();
+
+  intervalo = setInterval(atualizarCronometro, 1000);
+}
+
+
+function mostrarQuestao() {
+
+  const q = questoes[questaoAtual];
+
+  document.getElementById("numeroQuestao").textContent =
+    `Questão ${questaoAtual + 1} de 40`;
+
+  document.getElementById("pergunta").textContent =
+    q.pergunta;
+
+  const container =
+    document.getElementById("alternativas");
+
+  container.innerHTML = "";
+
+  q.alternativas.forEach((alternativa, index) => {
+
+    const label = document.createElement("label");
+
+    label.className = "alternativa";
+
+    label.innerHTML = `
+      <input
+        type="radio"
+        name="resposta"
+        value="${index}"
+      >
+      ${alternativa}
+    `;
+
+    container.appendChild(label);
+
+  });
+
+}
+
+
+function proximaQuestao() {
+
+  const selecionada =
+    document.querySelector(
+      'input[name="resposta"]:checked'
+    );
+
+  if (!selecionada) {
+
+    alert("Selecione uma alternativa.");
+
+    return;
+  }
+
+  respostas[questaoAtual] =
+    Number(selecionada.value);
+
+  questaoAtual++;
+
+  if (questaoAtual >= questoes.length) {
+
+    finalizarTeste();
+
+    return;
+  }
+
+  mostrarQuestao();
+}
+
+
+function atualizarCronometro() {
+
+  tempo--;
+
+  const minutos =
+    Math.floor(tempo / 60);
+
+  const segundos =
+    tempo % 60;
+
+  document.getElementById("cronometro").textContent =
+    `${String(minutos).padStart(2, "0")}:${String(segundos).padStart(2, "0")}`;
+
+  if (tempo <= 0) {
+
+    finalizarTeste();
+
+  }
+
+}
+
+
+function finalizarTeste() {
+
+  clearInterval(intervalo);
+
+  document.getElementById("teste").style.display = "none";
+
+  document.getElementById("resultado").style.display = "block";
+
+  console.log("Nome:", nome);
+
+  console.log("Respostas:", respostas);
+
+}
+
+</script>
+
+</body>
+</html>
