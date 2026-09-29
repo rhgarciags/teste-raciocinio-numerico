@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Painel Administrativo</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f3f4f6;
+      color: #1f2937;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 5px 25px rgba(0,0,0,.08);
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    #painel {
+      display: none;
+    }
+
+    #login {
+      max-width: 450px;
+      margin: auto;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      margin-top: 7px;
+      margin-bottom: 18px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    button {
+      border: none;
+      border-radius: 8px;
+      padding: 12px 20px;
+      background: #2563eb;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    .botao-sair {
+      background: #dc2626;
+      float: right;
+    }
+
+    .botao-sair:hover {
+      background: #b91c1c;
+    }
+
+    .erro {
+      color: #dc2626;
+      margin-top: 15px;
+    }
+
+    .sucesso {
+      color: #15803d;
+      margin-top: 15px;
+    }
+
+    .topo {
+      overflow: hidden;
+      margin-bottom: 25px;
+    }
+
+    .tabela-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th,
+    td {
+      padding: 13px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+    }
+
+    th {
+      background: #f9fafb;
+    }
+
+    tr:hover {
+      background: #f9fafb;
+    }
+
+    .vazio {
+      text-align: center;
+      padding: 40px;
+      color: #6b7280;
+    }
+
+    .carregando {
+      text-align: center;
+      padding: 30px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: bold;
+      background: #dcfce7;
+      color: #166534;
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+  <!-- ================================
+       LOGIN
+       ================================= -->
+
+  <section id="login">
+
+    <h1>Painel Administrativo</h1>
+
+    <p>
+      Entre com seu e-mail e senha.
+    </p>
+
+    <label for="email">
+      E-mail
+    </label>
+
+    <input
+      type="email"
+      id="email"
+      placeholder="Seu e-mail"
+      autocomplete="email"
+    >
+
+
+    <label for="senha">
+      Senha
+    </label>
+
+    <input
+      type="password"
+      id="senha"
+      placeholder="Sua senha"
+      autocomplete="current-password"
+    >
+
+
+    <button
+      onclick="entrar()"
+      id="botaoEntrar"
+    >
+      Entrar
+    </button>
+
+
+    <div
+      id="mensagemLogin"
+      class="erro"
+    ></div>
+
+  </section>
+
+
+  <!-- ================================
+       PAINEL
+       ================================= -->
+
+  <section id="painel">
+
+    <div class="topo">
+
+      <button
+        class="botao-sair"
+        onclick="sair()"
+      >
+        Sair
+      </button>
+
+      <h1>
+        Resultados dos candidatos
+      </h1>
+
+      <p>
+        Aqui estão os resultados registrados no teste.
+      </p>
+
+    </div>
+
+
+    <div
+      id="status"
+      class="carregando"
+    >
+      Carregando resultados...
+    </div>
+
+
+    <div class="tabela-container">
+
+      <table id="tabela">
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Candidato
+            </th>
+
+            <th>
+              Questões
+            </th>
+
+            <th>
+              Acertos
+            </th>
+
+            <th>
+              Aproveitamento
+            </th>
+
+            <th>
+              Data
+            </th>
+
+            <th>
+              Status
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody id="resultados">
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   SUPABASE
+   ===================================================== */
+
+const SUPABASE_URL =
+  "https://rfzauftsgqidtzwtdjlp.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_QAHvlE6BbMgm5nc9WzYJEQ_7f_YvkrU";
+
+
+/* =====================================================
+   ENTRAR
+   ===================================================== */
+
+async function entrar() {
+
+  const email =
+    document
+      .getElementById("email")
+      .value
+      .trim();
+
+  const senha =
+    document
+      .getElementById("senha")
+      .value;
+
+
+  const mensagem =
+    document.getElementById(
+      "mensagemLogin"
+    );
+
+
+  if (!email || !senha) {
+
+    mensagem.textContent =
+      "Informe seu e-mail e senha.";
+
+    return;
+
+  }
+
+
+  const botao =
+    document.getElementById(
+      "botaoEntrar"
+    );
+
+
+  botao.disabled = true;
+
+  mensagem.textContent =
+    "Entrando...";
+
+
+  try {
+
+    const resposta =
+      await fetch(
+        SUPABASE_URL +
+        "/auth/v1/token?grant_type=password",
+        {
+          method: "POST",
+
+          headers: {
+            "apikey":
+              SUPABASE_KEY,
+
+            "Content-Type":
+              "application/json"
+          },
+
+          body: JSON.stringify({
+
+            email: email,
+
+            password: senha
+
+          })
+        }
+      );
+
+
+    const dados =
+      await resposta.json();
+
+
+    if (!resposta.ok) {
+
+      throw new Error(
+        dados.error_description ||
+        dados.msg ||
+        "E-mail ou senha incorretos."
+      );
+
+    }
+
+
+    localStorage.setItem(
+      "supabase_access_token",
+      dados.access_token
+    );
+
+
+    localStorage.setItem(
+      "supabase_refresh_token",
+      dados.refresh_token
+    );
+
+
+    mostrarPainel(
+      dados.access_token
+    );
+
+
+  } catch (erro) {
+
+    console.error(erro);
+
+    mensagem.textContent =
+      erro.message;
+
+    botao.disabled = false;
+
+  }
+
+}
+
+
+/* =====================================================
+   MOSTRAR PAINEL
+   ===================================================== */
+
+async function mostrarPainel(
+  token
+) {
+
+  document.getElementById(
+    "login"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "painel"
+  ).style.display =
+    "block";
+
+
+  await carregarResultados(
+    token
+  );
+
+}
+
+
+/* =====================================================
+   CARREGAR RESULTADOS
+   ===================================================== */
+
+async function carregarResultados(
+  token
+) {
+
+  const status =
+    document.getElementById(
+      "status"
+    );
+
+
+  try {
+
+    const resposta =
+      await fetch(
+        SUPABASE_URL +
+        "/rest/v1/attempts" +
+        "?select=id,candidate_id,total_questions,score,finished_at,candidates(name)" +
+        "&order=id.desc",
+        {
+          method: "GET",
+
+          headers: {
+
+            "apikey":
+              SUPABASE_KEY,
+
+            "Authorization":
+              "Bearer " + token
+
+          }
+        }
+      );
+
+
+    const dados =
+      await resposta.json();
+
+
+    if (!resposta.ok) {
+
+      throw new Error(
+        dados.message ||
+        dados.hint ||
+        "Não foi possível carregar os resultados."
+      );
+
+    }
+
+
+    const tabela =
+      document.getElementById(
+        "resultados"
+      );
+
+
+    tabela.innerHTML =
+      "";
+
+
+    if (
+      !dados ||
+      dados.length === 0
+    ) {
+
+      status.textContent =
+        "Nenhum resultado encontrado.";
+
+      return;
+
+    }
+
+
+    status.textContent =
+      "";
+
+
+    dados.forEach(
+      function(tentativa) {
+
+        const linha =
+          document.createElement(
+            "tr"
+          );
+
+
+        const nome =
+          tentativa.candidates
+            ? tentativa.candidates.name
+            : "Sem nome";
+
+
+        const total =
+          tentativa.total_questions || 0;
+
+
+        const score =
+          tentativa.score;
+
+
+        let percentual =
+          "—";
+
+
+        if (
+          score !== null &&
+          total > 0
+        ) {
+
+          percentual =
+            Math.round(
+              (score / total) *
+              100
+            ) + "%";
+
+        }
+
+
+        let data =
+          "—";
+
+
+        if (
+          tentativa.finished_at
+        ) {
+
+          data =
+            new Date(
+              tentativa.finished_at
+            ).toLocaleString(
+              "pt-BR"
+            );
+
+        }
+
+
+        let statusTexto =
+          "Em andamento";
+
+
+        if (
+          tentativa.finished_at
+        ) {
+
+          statusTexto =
+            "Concluído";
+
+        }
+
+
+        linha.innerHTML =
+          `
+          <td>
+            ${escaparHTML(nome)}
+          </td>
+
+          <td>
+            ${total}
+          </td>
+
+          <td>
+            ${
+              score === null
+                ? "—"
+                : score
+            }
+          </td>
+
+          <td>
+            ${percentual}
+          </td>
+
+          <td>
+            ${data}
+          </td>
+
+          <td>
+            <span class="badge">
+              ${statusTexto}
+            </span>
+          </td>
+          `;
+
+
+        tabela.appendChild(
+          linha
+        );
+
+      }
+    );
+
+
+  } catch (erro) {
+
+    console.error(erro);
+
+    status.textContent =
+      "Erro ao carregar resultados: " +
+      erro.message;
+
+  }
+
+}
+
+
+/* =====================================================
+   ESCAPAR HTML
+   ================================================ */
+
+function escaparHTML(
+  texto
+) {
+
+  const div =
+    document.createElement(
+      "div"
+    );
+
+  div.textContent =
+    texto || "";
+
+  return div.innerHTML;
+
+}
+
+
+/* =====================================================
+   SAIR
+   ===================================================== */
+
+function sair() {
+
+  localStorage.removeItem(
+    "supabase_access_token"
+  );
+
+  localStorage.removeItem(
+    "supabase_refresh_token"
+  );
+
+
+  document.getElementById(
+    "painel"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "login"
+  ).style.display =
+    "block";
+
+
+  document.getElementById(
+    "email"
+  ).value =
+    "";
+
+
+  document.getElementById(
+    "senha"
+  ).value =
+    "";
+
+}
+
+
+/* =====================================================
+   VERIFICAR LOGIN EXISTENTE
+   ===================================================== */
+
+const tokenSalvo =
+  localStorage.getItem(
+    "supabase_access_token"
+  );
+
+
+if (tokenSalvo) {
+
+  mostrarPainel(
+    tokenSalvo
+  );
+
+}
+
+</script>
+
+</body>
+
+</html>
