@@ -5,10 +5,7 @@
 
 <meta charset="UTF-8">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Painel Administrativo</title>
 
@@ -19,37 +16,21 @@
 }
 
 body {
-
     margin: 0;
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
+    font-family: Arial, Helvetica, sans-serif;
     background: #f3f4f6;
-
     color: #1f2937;
-
     min-height: 100vh;
 }
 
 .container {
-
     max-width: 1100px;
-
     width: 100%;
-
     margin: 40px auto;
-
     padding: 30px;
-
     background: white;
-
     border-radius: 14px;
-
-    box-shadow:
-        0 5px 25px rgba(0,0,0,.08);
+    box-shadow: 0 5px 25px rgba(0,0,0,.08);
 }
 
 h1 {
@@ -66,20 +47,12 @@ h1 {
 }
 
 input {
-
     width: 100%;
-
     padding: 13px;
-
     margin-top: 7px;
-
     margin-bottom: 18px;
-
-    border:
-        1px solid #d1d5db;
-
+    border: 1px solid #d1d5db;
     border-radius: 8px;
-
     font-size: 16px;
 }
 
@@ -88,19 +61,12 @@ label {
 }
 
 button {
-
     border: none;
-
     border-radius: 8px;
-
     padding: 12px 20px;
-
     background: #2563eb;
-
     color: white;
-
     font-size: 15px;
-
     cursor: pointer;
 }
 
@@ -109,16 +75,12 @@ button:hover {
 }
 
 button:disabled {
-
     background: #9ca3af;
-
     cursor: not-allowed;
 }
 
 .botao-sair {
-
     background: #dc2626;
-
     float: right;
 }
 
@@ -127,40 +89,28 @@ button:disabled {
 }
 
 .erro {
-
     color: #dc2626;
-
     margin-top: 15px;
-
     line-height: 1.5;
-
     white-space: pre-wrap;
 }
 
-.usuario {
-
-    color: #6b7280;
-
-    font-size: 14px;
-
-    margin-bottom: 20px;
+.status {
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    background: #f9fafb;
 }
 
 .seletor-testes {
-
     display: flex;
-
     gap: 12px;
-
     flex-wrap: wrap;
-
     margin: 25px 0;
 }
 
 .botao-teste {
-
     background: #e5e7eb;
-
     color: #1f2937;
 }
 
@@ -169,39 +119,26 @@ button:disabled {
 }
 
 .botao-teste.ativo {
-
     background: #2563eb;
-
     color: white;
 }
 
 .pesquisa {
-
     background: #f9fafb;
-
-    border:
-        1px solid #e5e7eb;
-
+    border: 1px solid #e5e7eb;
     border-radius: 10px;
-
     padding: 20px;
-
     margin-bottom: 20px;
 }
 
 .pesquisa-linha {
-
     display: flex;
-
     gap: 10px;
-
     align-items: center;
 }
 
 .pesquisa-linha input {
-
     margin: 0;
-
     flex: 1;
 }
 
@@ -214,23 +151,9 @@ button:disabled {
 }
 
 .contador {
-
     margin-top: 12px;
-
     color: #6b7280;
-
     font-size: 14px;
-}
-
-.status {
-
-    margin-top: 15px;
-
-    padding: 15px;
-
-    border-radius: 8px;
-
-    background: #f9fafb;
 }
 
 .tabela-container {
@@ -238,22 +161,15 @@ button:disabled {
 }
 
 table {
-
     width: 100%;
-
     border-collapse: collapse;
-
     margin-top: 20px;
 }
 
 th,
 td {
-
     padding: 13px;
-
-    border-bottom:
-        1px solid #e5e7eb;
-
+    border-bottom: 1px solid #e5e7eb;
     text-align: left;
 }
 
@@ -266,101 +182,74 @@ tr:hover {
 }
 
 .vazio {
-
     text-align: center;
-
     padding: 40px;
-
     color: #6b7280;
 }
 
 .badge {
-
     display: inline-block;
-
     padding: 5px 9px;
-
     border-radius: 999px;
-
     font-size: 12px;
-
     font-weight: bold;
-
     background: #dcfce7;
-
     color: #166534;
 }
 
+.usuario {
+    color: #6b7280;
+    font-size: 14px;
+}
+
 .assinatura {
-
     text-align: center;
-
     color: #9ca3af;
-
     font-size: 10px;
-
     margin-top: 30px;
-
-    padding-bottom: 15px;
 }
 
 @media (max-width: 700px) {
 
     .container {
-
         margin: 15px;
-
         padding: 20px;
     }
 
     .pesquisa-linha {
-
         flex-direction: column;
-
         align-items: stretch;
     }
 
     .pesquisa-linha button {
-
         width: 100%;
     }
 
     .seletor-testes {
-
         flex-direction: column;
     }
 
     .botao-teste {
-
         width: 100%;
     }
+
 }
 
 </style>
 
 </head>
 
-
 <body>
-
 
 <div class="container">
 
-
-<!-- =====================================================
-     LOGIN
-===================================================== -->
-
 <section id="login">
 
-    <h1>
-        Painel Administrativo
-    </h1>
+    <h1>Painel Administrativo</h1>
 
     <p>
         Acesse os resultados dos testes.
     </p>
-
 
     <label for="email">
         E-mail
@@ -373,7 +262,6 @@ tr:hover {
         autocomplete="email"
     >
 
-
     <label for="senha">
         Senha
     </label>
@@ -385,14 +273,12 @@ tr:hover {
         autocomplete="current-password"
     >
 
-
     <button
         id="botaoEntrar"
         onclick="entrar()"
     >
         Entrar
     </button>
-
 
     <div
         id="mensagemLogin"
@@ -402,13 +288,7 @@ tr:hover {
 </section>
 
 
-
-<!-- =====================================================
-     PAINEL
-===================================================== -->
-
 <section id="painel">
-
 
     <button
         class="botao-sair"
@@ -417,39 +297,29 @@ tr:hover {
         Sair
     </button>
 
-
     <h1>
         Painel Administrativo
     </h1>
-
 
     <div
         id="usuarioLogado"
         class="usuario"
     ></div>
 
-
     <p>
         Selecione o teste que deseja consultar:
     </p>
 
 
-
-    <!-- =================================================
-         SELEÇÃO DOS TESTES
-    ================================================== -->
-
     <div class="seletor-testes">
-
 
         <button
             id="botaoNumerico"
-            class="botao-teste"
+            class="botao-teste ativo"
             onclick="selecionarTeste('numerico')"
         >
             Teste de Raciocínio Numérico
         </button>
-
 
         <button
             id="botaoNegociacao"
@@ -459,39 +329,25 @@ tr:hover {
             Teste de Negociação
         </button>
 
-
     </div>
 
 
-
     <h2 id="tituloTeste">
-        Selecione um teste
+        Teste de Raciocínio Numérico
     </h2>
 
 
-
-    <!-- =================================================
-         RESULTADOS
-    ================================================== -->
-
     <div
         id="areaResultados"
-        style="display:none;"
     >
-
 
         <div class="pesquisa">
 
-
-            <label
-                for="pesquisaNome"
-            >
+            <label for="pesquisaNome">
                 Pesquisar candidato por nome
             </label>
 
-
             <div class="pesquisa-linha">
-
 
                 <input
                     type="text"
@@ -500,14 +356,12 @@ tr:hover {
                     oninput="filtrarResultados()"
                 >
 
-
                 <button
                     class="botao-limpar"
                     onclick="limparPesquisa()"
                 >
                     Limpar
                 </button>
-
 
                 <button
                     class="botao-atualizar"
@@ -516,9 +370,7 @@ tr:hover {
                     Atualizar
                 </button>
 
-
             </div>
-
 
             <div
                 id="contador"
@@ -527,9 +379,7 @@ tr:hover {
                 Carregando...
             </div>
 
-
         </div>
-
 
 
         <div
@@ -540,36 +390,38 @@ tr:hover {
         </div>
 
 
-
         <div class="tabela-container">
-
 
             <table>
 
+                <thead id="cabecalhoTabela">
 
-                <thead
-                    id="cabecalhoTabela"
-                >
+                    <tr>
+
+                        <th>Candidato</th>
+
+                        <th>Questões</th>
+
+                        <th>Pontuação</th>
+
+                        <th>Taxa de aproveitamento</th>
+
+                        <th>Status</th>
+
+                    </tr>
+
                 </thead>
 
-
-                <tbody
-                    id="resultados"
-                >
+                <tbody id="resultados">
                 </tbody>
-
 
             </table>
 
-
         </div>
-
 
     </div>
 
-
 </section>
-
 
 
 <div class="assinatura">
@@ -579,151 +431,38 @@ tr:hover {
 
 </div>
 
-
 </div>
-
 
 
 <script>
 
-
 /* =========================================================
-   SUPABASE - RACIOCÍNIO NUMÉRICO
+   SUPABASE DO RACIOCÍNIO NUMÉRICO
 ========================================================= */
 
-const NUMERICO_URL =
+const SUPABASE_URL =
     "https://rfzauftsgqidtzwtdjlp.supabase.co";
 
-
-const NUMERICO_KEY =
+const SUPABASE_KEY =
     "sb_publishable_QAHvlE6BbMgm5nc9WzYJEQ_7f_YvkrU";
-
-
-
-/* =========================================================
-   SUPABASE - NEGOCIAÇÃO
-========================================================= */
-
-const NEGOCIACAO_URL =
-    "https://wasgpxeorsmhrryrnoih.supabase.co";
-
-
-const NEGOCIACAO_KEY =
-    "sb_publishable_9rZ70PM0VmmkQSUfd2AiPw_tJf2XU9_";
-
 
 
 /* =========================================================
    VARIÁVEIS
 ========================================================= */
 
-let tokenNumerico = null;
+let accessToken = null;
 
-let tokenNegociacao = null;
-
-let testeAtual = null;
+let testeAtual = "numerico";
 
 let todosResultados = [];
-
 
 
 /* =========================================================
    LOGIN
 ========================================================= */
 
-async function fazerLogin(
-    url,
-    chave,
-    email,
-    senha
-) {
-
-    const resposta =
-        await fetch(
-            url +
-            "/auth/v1/token?grant_type=password",
-            {
-
-                method: "POST",
-
-                headers: {
-
-                    "apikey":
-                        chave,
-
-                    "Content-Type":
-                        "application/json",
-
-                    "Accept":
-                        "application/json"
-                },
-
-                body:
-                    JSON.stringify({
-
-                        email:
-                            email,
-
-                        password:
-                            senha
-
-                    })
-            }
-        );
-
-
-    const texto =
-        await resposta.text();
-
-
-    let dados = {};
-
-
-    try {
-
-        dados =
-            texto
-            ? JSON.parse(texto)
-            : {};
-
-    } catch {
-
-        dados = {};
-
-    }
-
-
-    if (!resposta.ok) {
-
-        throw new Error(
-
-            dados.error_description ||
-            dados.msg ||
-            dados.message ||
-            "Não foi possível fazer login."
-        );
-    }
-
-
-    if (!dados.access_token) {
-
-        throw new Error(
-            "O Supabase não retornou o token de acesso."
-        );
-    }
-
-
-    return dados.access_token;
-}
-
-
-
-/* =========================================================
-   ENTRAR
-========================================================= */
-
 async function entrar() {
-
 
     const email =
         document
@@ -731,27 +470,22 @@ async function entrar() {
         .value
         .trim();
 
-
     const senha =
         document
         .getElementById("senha")
         .value;
-
 
     const mensagem =
         document.getElementById(
             "mensagemLogin"
         );
 
-
     const botao =
         document.getElementById(
             "botaoEntrar"
         );
 
-
     mensagem.textContent = "";
-
 
     if (!email || !senha) {
 
@@ -761,7 +495,6 @@ async function entrar() {
         return;
     }
 
-
     botao.disabled = true;
 
     botao.textContent =
@@ -770,52 +503,81 @@ async function entrar() {
 
     try {
 
+        const resposta =
+            await fetch(
+                SUPABASE_URL +
+                "/auth/v1/token?grant_type=password",
+                {
+                    method: "POST",
 
-        /*
-         * ==================================================
-         * LOGIN NO RACIOCÍNIO NUMÉRICO
-         * ==================================================
-         */
+                    headers: {
+                        "apikey":
+                            SUPABASE_KEY,
 
-        tokenNumerico =
-            await fazerLogin(
-                NUMERICO_URL,
-                NUMERICO_KEY,
-                email,
-                senha
+                        "Content-Type":
+                            "application/json",
+
+                        "Accept":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            email: email,
+                            password: senha
+                        })
+                }
             );
 
 
-        /*
-         * ==================================================
-         * LOGIN NA NEGOCIAÇÃO
-         * ==================================================
-         */
+        const texto =
+            await resposta.text();
 
-        tokenNegociacao =
-            await fazerLogin(
-                NEGOCIACAO_URL,
-                NEGOCIACAO_KEY,
-                email,
-                senha
+
+        let dados = {};
+
+        try {
+
+            dados =
+                texto
+                ? JSON.parse(texto)
+                : {};
+
+        } catch {
+
+            dados = {};
+
+        }
+
+
+        if (!resposta.ok) {
+
+            throw new Error(
+                dados.error_description ||
+                dados.msg ||
+                dados.message ||
+                "E-mail ou senha incorretos."
             );
 
+        }
 
-        /*
-         * ==================================================
-         * SALVAR SESSÕES
-         * ==================================================
-         */
+
+        if (!dados.access_token) {
+
+            throw new Error(
+                "O Supabase não retornou o token de acesso."
+            );
+
+        }
+
+
+        accessToken =
+            dados.access_token;
+
 
         localStorage.setItem(
-            "painel_token_numerico",
-            tokenNumerico
-        );
-
-
-        localStorage.setItem(
-            "painel_token_negociacao",
-            tokenNegociacao
+            "painel_access_token",
+            accessToken
         );
 
 
@@ -827,25 +589,18 @@ async function entrar() {
 
         mostrarPainel();
 
+    }
 
-    } catch (erro) {
-
+    catch (erro) {
 
         console.error(
             "Erro no login:",
             erro
         );
 
-
-        tokenNumerico = null;
-
-        tokenNegociacao = null;
-
-
         mensagem.textContent =
             "Não foi possível fazer login.\n\n" +
             erro.message;
-
 
         botao.disabled = false;
 
@@ -856,13 +611,11 @@ async function entrar() {
 }
 
 
-
 /* =========================================================
    MOSTRAR PAINEL
 ========================================================= */
 
 function mostrarPainel() {
-
 
     document.getElementById(
         "login"
@@ -885,12 +638,16 @@ function mostrarPainel() {
     document.getElementById(
         "usuarioLogado"
     ).textContent =
-
         email
         ? "Usuário conectado: " + email
         : "";
-}
 
+
+    selecionarTeste(
+        "numerico"
+    );
+
+}
 
 
 /* =========================================================
@@ -900,7 +657,6 @@ function mostrarPainel() {
 function selecionarTeste(
     teste
 ) {
-
 
     testeAtual =
         teste;
@@ -934,7 +690,6 @@ function selecionarTeste(
         teste === "numerico"
     ) {
 
-
         document.getElementById(
             "botaoNumerico"
         ).classList.add(
@@ -946,13 +701,34 @@ function selecionarTeste(
             "tituloTeste"
         ).textContent =
             "Teste de Raciocínio Numérico";
+
+
+        document.getElementById(
+            "cabecalhoTabela"
+        ).innerHTML = `
+
+            <tr>
+
+                <th>Candidato</th>
+
+                <th>Questões</th>
+
+                <th>Pontuação</th>
+
+                <th>Taxa de aproveitamento</th>
+
+                <th>Status</th>
+
+            </tr>
+
+        `;
+
     }
 
 
     if (
         teste === "negociacao"
     ) {
-
 
         document.getElementById(
             "botaoNegociacao"
@@ -965,109 +741,34 @@ function selecionarTeste(
             "tituloTeste"
         ).textContent =
             "Teste de Negociação";
+
+
+        document.getElementById(
+            "cabecalhoTabela"
+        ).innerHTML = `
+
+            <tr>
+
+                <th>Candidato</th>
+
+                <th>Questões</th>
+
+                <th>Pontuação</th>
+
+                <th>Classificação</th>
+
+                <th>Status</th>
+
+            </tr>
+
+        `;
+
     }
-
-
-    document.getElementById(
-        "areaResultados"
-    ).style.display =
-        "block";
-
-
-    configurarCabecalho();
 
 
     carregarResultados();
+
 }
-
-
-
-/* =========================================================
-   CABEÇALHO
-========================================================= */
-
-function configurarCabecalho() {
-
-
-    const cabecalho =
-        document.getElementById(
-            "cabecalhoTabela"
-        );
-
-
-    if (
-        testeAtual === "numerico"
-    ) {
-
-
-        cabecalho.innerHTML = `
-
-            <tr>
-
-                <th>
-                    Candidato
-                </th>
-
-                <th>
-                    Questões
-                </th>
-
-                <th>
-                    Pontuação
-                </th>
-
-                <th>
-                    Taxa de aproveitamento
-                </th>
-
-                <th>
-                    Status
-                </th>
-
-            </tr>
-
-        `;
-
-
-        return;
-    }
-
-
-    if (
-        testeAtual === "negociacao"
-    ) {
-
-
-        cabecalho.innerHTML = `
-
-            <tr>
-
-                <th>
-                    Candidato
-                </th>
-
-                <th>
-                    Questões
-                </th>
-
-                <th>
-                    Pontuação
-                </th>
-
-                <th>
-                    Classificação
-                </th>
-
-                <th>
-                    Status
-                </th>
-
-            </tr>
-
-        `;
-    }
-}
-
 
 
 /* =========================================================
@@ -1075,13 +776,6 @@ function configurarCabecalho() {
 ========================================================= */
 
 async function carregarResultados() {
-
-
-    if (!testeAtual) {
-
-        return;
-    }
-
 
     const status =
         document.getElementById(
@@ -1093,115 +787,99 @@ async function carregarResultados() {
         "Carregando resultados...";
 
 
+    if (!accessToken) {
+
+        status.textContent =
+            "Sessão não encontrada. Faça o login novamente.";
+
+        return;
+
+    }
+
+
     try {
 
+        /*
+         * PRIMEIRO TESTE:
+         *
+         * Nesta versão estamos usando somente
+         * o projeto do Raciocínio Numérico.
+         *
+         * Assim conseguimos confirmar que:
+         *
+         * LOGIN
+         * +
+         * TOKEN
+         * +
+         * CONSULTA
+         *
+         * estão funcionando juntos.
+         */
 
-        let url;
-
-        let chave;
-
-        let token;
-
-        let consulta;
-
-
-
-        /* =================================================
-           RACIOCÍNIO NUMÉRICO
-        ================================================== */
-
-        if (
-            testeAtual === "numerico"
-        ) {
-
-
-            url =
-                NUMERICO_URL;
-
-
-            chave =
-                NUMERICO_KEY;
-
-
-            token =
-                tokenNumerico;
-
-
-            consulta =
-                "/rest/v1/attempts" +
-
-                "?select=id,candidate_id,score,total_questions,candidates(name)" +
-
-                "&order=id.desc";
-        }
-
-
-
-        /* =================================================
-           NEGOCIAÇÃO
-        ================================================== */
 
         if (
             testeAtual === "negociacao"
         ) {
 
+            status.textContent =
+                "O teste de Negociação será conectado após confirmarmos o funcionamento do Raciocínio Numérico.";
 
-            url =
-                NEGOCIACAO_URL;
+            document.getElementById(
+                "contador"
+            ).textContent =
+                "";
 
+            document.getElementById(
+                "resultados"
+            ).innerHTML = `
+                <tr>
+                    <td
+                        colspan="5"
+                        class="vazio"
+                    >
+                        A conexão do teste de Negociação será configurada na próxima etapa.
+                    </td>
+                </tr>
+            `;
 
-            chave =
-                NEGOCIACAO_KEY;
+            return;
 
-
-            token =
-                tokenNegociacao;
-
-
-            consulta =
-                "/rest/v1/attempts" +
-
-                "?select=id,candidate_id,score,total_questions,classification,candidates(name)" +
-
-                "&order=id.desc";
         }
 
 
-
-        if (!token) {
-
-            throw new Error(
-                "Sessão deste teste não encontrada. Faça login novamente."
-            );
-        }
-
+        const url =
+            SUPABASE_URL +
+            "/rest/v1/attempts" +
+            "?select=id,candidate_id,score,total_questions,candidates(name)";
 
 
         const resposta =
             await fetch(
-                url + consulta,
+                url,
                 {
-
                     method: "GET",
 
                     headers: {
 
                         "apikey":
-                            chave,
+                            SUPABASE_KEY,
 
                         "Authorization":
                             "Bearer " +
-                            token,
+                            accessToken,
 
                         "Content-Type":
                             "application/json",
 
                         "Accept":
-                            "application/json"
+                            "application/json",
+
+                        "Prefer":
+                            "return=representation"
+
                     }
                 }
             );
-
 
 
         const texto =
@@ -1221,23 +899,21 @@ async function carregarResultados() {
         } catch {
 
             dados = [];
-        }
 
+        }
 
 
         if (!resposta.ok) {
 
             throw new Error(
-
                 dados.message ||
                 dados.hint ||
                 dados.details ||
-                dados.error ||
                 "HTTP " +
                 resposta.status
             );
-        }
 
+        }
 
 
         todosResultados =
@@ -1252,9 +928,9 @@ async function carregarResultados() {
 
         filtrarResultados();
 
+    }
 
-    } catch (erro) {
-
+    catch (erro) {
 
         console.error(
             "Erro ao carregar resultados:",
@@ -1271,17 +947,17 @@ async function carregarResultados() {
             "contador"
         ).textContent =
             "";
+
     }
+
 }
 
 
-
 /* =========================================================
-   FILTRAR RESULTADOS
+   FILTRAR
 ========================================================= */
 
 function filtrarResultados() {
-
 
     const campo =
         document.getElementById(
@@ -1297,23 +973,19 @@ function filtrarResultados() {
 
     const filtrados =
         todosResultados.filter(
-
             function(item) {
 
-
                 const nome =
-
                     item.candidates &&
                     item.candidates.name
-
                     ? item.candidates.name
-
                     : "Sem nome";
 
 
                 return nome
                     .toLowerCase()
                     .includes(texto);
+
             }
         );
 
@@ -1321,8 +993,8 @@ function filtrarResultados() {
     mostrarResultados(
         filtrados
     );
-}
 
+}
 
 
 /* =========================================================
@@ -1332,7 +1004,6 @@ function filtrarResultados() {
 function mostrarResultados(
     dados
 ) {
-
 
     const tabela =
         document.getElementById(
@@ -1350,11 +1021,9 @@ function mostrarResultados(
         "";
 
 
-
     if (
         dados.length === 0
     ) {
-
 
         contador.textContent =
             "Nenhum candidato encontrado.";
@@ -1377,27 +1046,20 @@ function mostrarResultados(
 
         `;
 
-
         return;
+
     }
 
 
-
     contador.textContent =
-
         dados.length === 1
-
         ? "1 resultado encontrado."
-
         : dados.length +
           " resultados encontrados.";
 
 
-
     dados.forEach(
-
         function(item) {
-
 
             const linha =
                 document.createElement(
@@ -1406,12 +1068,9 @@ function mostrarResultados(
 
 
             const nome =
-
                 item.candidates &&
                 item.candidates.name
-
                 ? item.candidates.name
-
                 : "Sem nome";
 
 
@@ -1425,43 +1084,29 @@ function mostrarResultados(
                 "—";
 
 
-
-            /* ============================================
-               RACIOCÍNIO NUMÉRICO
-            ============================================ */
-
             if (
                 testeAtual === "numerico"
             ) {
-
 
                 let aproveitamento =
                     "—";
 
 
                 if (
-
                     item.score !== null &&
-
                     item.score !== undefined &&
-
                     total > 0
-
                 ) {
 
-
                     aproveitamento =
-
                         Math.round(
-
                             (
                                 Number(item.score) /
                                 Number(total)
                             ) * 100
-
                         ) + "%";
-                }
 
+                }
 
 
                 linha.innerHTML = `
@@ -1471,7 +1116,9 @@ function mostrarResultados(
                     </td>
 
                     <td>
-                        ${total}
+                        ${escaparHTML(
+                            String(total)
+                        )}
                     </td>
 
                     <td>
@@ -1493,66 +1140,8 @@ function mostrarResultados(
                     </td>
 
                 `;
+
             }
-
-
-
-            /* ============================================
-               NEGOCIAÇÃO
-            ============================================ */
-
-            if (
-                testeAtual === "negociacao"
-            ) {
-
-
-                const classificacao =
-
-                    item.classification ||
-
-                    "—";
-
-
-
-                linha.innerHTML = `
-
-                    <td>
-                        ${escaparHTML(nome)}
-                    </td>
-
-                    <td>
-                        ${total}
-                    </td>
-
-                    <td>
-                        ${escaparHTML(
-                            String(score)
-                        )}
-                    </td>
-
-                    <td>
-
-                        <span class="badge">
-
-                            ${escaparHTML(
-                                classificacao
-                            )}
-
-                        </span>
-
-                    </td>
-
-                    <td>
-
-                        <span class="badge">
-                            Concluído
-                        </span>
-
-                    </td>
-
-                `;
-            }
-
 
 
             tabela.appendChild(
@@ -1561,8 +1150,8 @@ function mostrarResultados(
 
         }
     );
-}
 
+}
 
 
 /* =========================================================
@@ -1571,7 +1160,6 @@ function mostrarResultados(
 
 function limparPesquisa() {
 
-
     document.getElementById(
         "pesquisaNome"
     ).value =
@@ -1579,8 +1167,8 @@ function limparPesquisa() {
 
 
     filtrarResultados();
-}
 
+}
 
 
 /* =========================================================
@@ -1590,7 +1178,6 @@ function limparPesquisa() {
 function escaparHTML(
     texto
 ) {
-
 
     const div =
         document.createElement(
@@ -1603,8 +1190,8 @@ function escaparHTML(
 
 
     return div.innerHTML;
-}
 
+}
 
 
 /* =========================================================
@@ -1613,12 +1200,7 @@ function escaparHTML(
 
 function sair() {
 
-
-    tokenNumerico =
-        null;
-
-
-    tokenNegociacao =
+    accessToken =
         null;
 
 
@@ -1631,12 +1213,7 @@ function sair() {
 
 
     localStorage.removeItem(
-        "painel_token_numerico"
-    );
-
-
-    localStorage.removeItem(
-        "painel_token_negociacao"
+        "painel_access_token"
     );
 
 
@@ -1674,77 +1251,30 @@ function sair() {
     ).textContent =
         "";
 
-
-    document.getElementById(
-        "areaResultados"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "tituloTeste"
-    ).textContent =
-        "Selecione um teste";
-
-
-    document.getElementById(
-        "botaoNumerico"
-    ).classList.remove(
-        "ativo"
-    );
-
-
-    document.getElementById(
-        "botaoNegociacao"
-    ).classList.remove(
-        "ativo"
-    );
 }
-
 
 
 /* =========================================================
-   RECUPERAR SESSÃO SALVA
+   RECUPERAR SESSÃO
 ========================================================= */
 
-const tokenNumericoSalvo =
+const tokenSalvo =
     localStorage.getItem(
-        "painel_token_numerico"
+        "painel_access_token"
     );
 
 
-const tokenNegociacaoSalvo =
-    localStorage.getItem(
-        "painel_token_negociacao"
-    );
+if (tokenSalvo) {
 
-
-const emailSalvo =
-    localStorage.getItem(
-        "painel_email"
-    );
-
-
-if (
-    tokenNumericoSalvo &&
-    tokenNegociacaoSalvo
-) {
-
-
-    tokenNumerico =
-        tokenNumericoSalvo;
-
-
-    tokenNegociacao =
-        tokenNegociacaoSalvo;
+    accessToken =
+        tokenSalvo;
 
 
     mostrarPainel();
+
 }
 
-
 </script>
-
 
 </body>
 
