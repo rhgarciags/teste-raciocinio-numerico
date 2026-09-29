@@ -32,7 +32,11 @@
       margin-bottom: 30px;
     }
 
-    input {
+    h2 {
+      line-height: 1.4;
+    }
+
+    input[type="text"] {
       width: 100%;
       padding: 14px;
       font-size: 16px;
@@ -44,7 +48,7 @@
     button {
       background: #2563eb;
       color: white;
-      border: 0;
+      border: none;
       padding: 14px 22px;
       border-radius: 8px;
       font-size: 16px;
@@ -53,6 +57,11 @@
 
     button:hover {
       background: #1d4ed8;
+    }
+
+    button:disabled {
+      background: #999;
+      cursor: not-allowed;
     }
 
     .center {
@@ -69,6 +78,10 @@
       justify-content: space-between;
       margin-bottom: 30px;
       font-weight: bold;
+    }
+
+    #cronometro {
+      color: #dc2626;
     }
 
     .alternativa {
@@ -88,6 +101,12 @@
       width: auto;
       margin: 0 10px 0 0;
     }
+
+    .mensagem {
+      text-align: center;
+      margin-top: 20px;
+      color: #555;
+    }
   </style>
 </head>
 
@@ -102,27 +121,42 @@
     <h1>Teste de Raciocínio Numérico</h1>
 
     <p>
-      Você terá 5 minutos para responder às questões.
+      Você terá <strong>5 minutos</strong> para responder ao teste.
     </p>
 
-    <label>Nome</label>
+    <p>
+      Leia cada questão atentamente e selecione uma alternativa.
+    </p>
+
+    <label for="nome">Nome</label>
 
     <input
       type="text"
       id="nome"
       placeholder="Digite seu nome"
+      autocomplete="name"
     >
 
     <div class="center">
-      <button onclick="iniciarTeste()">
+
+      <button
+        id="botaoIniciar"
+        onclick="iniciarTeste()"
+      >
         Iniciar teste
       </button>
+
     </div>
+
+    <p
+      id="mensagemInicio"
+      class="mensagem"
+    ></p>
 
   </div>
 
 
-  <!-- TESTE -->
+  <!-- TELA DO TESTE -->
 
   <div id="teste">
 
@@ -151,9 +185,12 @@
   </div>
 
 
-  <!-- RESULTADO -->
+  <!-- TELA FINAL -->
 
-  <div id="resultado" class="center">
+  <div
+    id="resultado"
+    class="center"
+  >
 
     <h1>Teste concluído</h1>
 
@@ -170,30 +207,38 @@
 </div>
 
 
+<!-- BIBLIOTECA DO SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
 <script>
 
-const questoes = [
+/* ==================================================
+   CONFIGURAÇÃO DO SUPABASE
+   ================================================== */
 
-  {
-    pergunta: "Uma empresa vendeu 250 unidades em janeiro e 300 em fevereiro. Qual foi o aumento percentual?",
-    alternativas: ["10%", "15%", "20%", "25%"],
-    correta: 2
-  },
+const SUPABASE_URL =
+  "https://rfzauftsgqidtzwtdjlp.supabase.co/rest/v1/";
 
-  {
-    pergunta: "Quanto é 15% de 200?",
-    alternativas: ["20", "25", "30", "35"],
-    correta: 2
-  },
+const SUPABASE_KEY =
+  "sb_publishable_QAHvlE6BbMgm5nc9WzYJEQ_7f_YvkrU";
 
-  {
-    pergunta: "Se 5 produtos custam R$ 100, quanto custam 8 produtos pelo mesmo preço unitário?",
-    alternativas: ["R$ 120", "R$ 140", "R$ 160", "R$ 180"],
-    correta: 2
-  }
 
-];
+/* ==================================================
+   CONEXÃO COM O SUPABASE
+   ================================================== */
 
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+/* ==================================================
+   VARIÁVEIS
+   ================================================== */
 
 let nome = "";
 
@@ -203,128 +248,442 @@ let respostas = [];
 
 let tempo = 300;
 
-let intervalo;
+let intervalo = null;
+
+let candidateId = null;
+
+let attemptId = null;
 
 
-function iniciarTeste() {
+/* ==================================================
+   QUESTÕES TEMPORÁRIAS
+   ==================================================
 
-  nome = document.getElementById("nome").value.trim();
+   Estas serão substituídas posteriormente
+   pelas suas 40 questões.
+   ================================================== */
+
+const questoes = [
+
+  {
+    pergunta:
+      "Uma empresa vendeu 250 unidades em janeiro e 300 em fevereiro. Qual foi o aumento percentual?",
+
+    alternativas: [
+      "10%",
+      "15%",
+      "20%",
+      "25%"
+    ],
+
+    correta: 2
+  },
+
+  {
+    pergunta:
+      "Quanto é 15% de 200?",
+
+    alternativas: [
+      "20",
+      "25",
+      "30",
+      "35"
+    ],
+
+    correta: 2
+  },
+
+  {
+    pergunta:
+      "Se 5 produtos custam R$ 100, quanto custam 8 produtos pelo mesmo preço unitário?",
+
+    alternativas: [
+      "R$ 120",
+      "R$ 140",
+      "R$ 160",
+      "R$ 180"
+    ],
+
+    correta: 2
+  }
+
+];
+
+
+/* ==================================================
+   INICIAR TESTE
+   ================================================== */
+
+async function iniciarTeste() {
+
+  nome =
+    document
+      .getElementById("nome")
+      .value
+      .trim();
+
 
   if (!nome) {
+
     alert("Digite seu nome para iniciar.");
+
     return;
   }
 
-  document.getElementById("inicio").style.display = "none";
 
-  document.getElementById("teste").style.display = "block";
+  const botao =
+    document.getElementById("botaoIniciar");
 
-  mostrarQuestao();
+  botao.disabled = true;
 
-  intervalo = setInterval(atualizarCronometro, 1000);
+
+  document.getElementById(
+    "mensagemInicio"
+  ).textContent =
+    "Iniciando teste...";
+
+
+  try {
+
+    /* CADASTRA O CANDIDATO */
+
+    const resultadoCandidato =
+      await supabaseClient
+        .from("candidates")
+        .insert({
+          name: nome
+        })
+        .select()
+        .single();
+
+
+    if (resultadoCandidato.error) {
+
+      console.error(
+        resultadoCandidato.error
+      );
+
+      throw new Error(
+        "Não foi possível registrar o candidato."
+      );
+    }
+
+
+    candidateId =
+      resultadoCandidato.data.id;
+
+
+    /* CRIA A TENTATIVA */
+
+    const resultadoTentativa =
+      await supabaseClient
+        .from("attempts")
+        .insert({
+          candidate_id: candidateId,
+          total_questions: 40
+        })
+        .select()
+        .single();
+
+
+    if (resultadoTentativa.error) {
+
+      console.error(
+        resultadoTentativa.error
+      );
+
+      throw new Error(
+        "Não foi possível iniciar a tentativa."
+      );
+    }
+
+
+    attemptId =
+      resultadoTentativa.data.id;
+
+
+    /* MOSTRA O TESTE */
+
+    document.getElementById(
+      "inicio"
+    ).style.display =
+      "none";
+
+
+    document.getElementById(
+      "teste"
+    ).style.display =
+      "block";
+
+
+    questaoAtual = 0;
+
+    respostas = [];
+
+    tempo = 300;
+
+
+    mostrarQuestao();
+
+    atualizarCronometro();
+
+
+    intervalo =
+      setInterval(
+        atualizarCronometro,
+        1000
+      );
+
+
+  } catch (erro) {
+
+    console.error(erro);
+
+
+    alert(
+      "Não foi possível iniciar o teste. Verifique a configuração do Supabase."
+    );
+
+
+    botao.disabled = false;
+
+
+    document.getElementById(
+      "mensagemInicio"
+    ).textContent = "";
+
+  }
+
 }
 
+
+/* ==================================================
+   MOSTRAR QUESTÃO
+   ================================================== */
 
 function mostrarQuestao() {
 
-  const q = questoes[questaoAtual];
+  const q =
+    questoes[questaoAtual];
 
-  document.getElementById("numeroQuestao").textContent =
+
+  document.getElementById(
+    "numeroQuestao"
+  ).textContent =
     `Questão ${questaoAtual + 1} de 40`;
 
-  document.getElementById("pergunta").textContent =
+
+  document.getElementById(
+    "pergunta"
+  ).textContent =
     q.pergunta;
 
+
   const container =
-    document.getElementById("alternativas");
+    document.getElementById(
+      "alternativas"
+    );
+
 
   container.innerHTML = "";
 
-  q.alternativas.forEach((alternativa, index) => {
 
-    const label = document.createElement("label");
+  q.alternativas.forEach(
+    (alternativa, index) => {
 
-    label.className = "alternativa";
+      const label =
+        document.createElement("label");
 
-    label.innerHTML = `
-      <input
-        type="radio"
-        name="resposta"
-        value="${index}"
-      >
-      ${alternativa}
-    `;
 
-    container.appendChild(label);
+      label.className =
+        "alternativa";
 
-  });
+
+      label.innerHTML = `
+        <input
+          type="radio"
+          name="resposta"
+          value="${index}"
+        >
+        ${alternativa}
+      `;
+
+
+      container.appendChild(label);
+
+    }
+  );
 
 }
 
 
-function proximaQuestao() {
+/* ==================================================
+   PRÓXIMA QUESTÃO
+   ================================================== */
+
+async function proximaQuestao() {
 
   const selecionada =
     document.querySelector(
       'input[name="resposta"]:checked'
     );
 
+
   if (!selecionada) {
 
-    alert("Selecione uma alternativa.");
+    alert(
+      "Selecione uma alternativa."
+    );
 
     return;
   }
 
+
+  const resposta =
+    Number(
+      selecionada.value
+    );
+
+
   respostas[questaoAtual] =
-    Number(selecionada.value);
+    resposta;
+
 
   questaoAtual++;
 
-  if (questaoAtual >= questoes.length) {
 
-    finalizarTeste();
+  if (
+    questaoAtual >=
+    questoes.length
+  ) {
+
+    await finalizarTeste();
 
     return;
   }
 
+
   mostrarQuestao();
+
 }
 
 
+/* ==================================================
+   CRONÔMETRO
+   ================================================== */
+
 function atualizarCronometro() {
 
-  tempo--;
-
   const minutos =
-    Math.floor(tempo / 60);
+    Math.floor(
+      tempo / 60
+    );
+
 
   const segundos =
     tempo % 60;
 
-  document.getElementById("cronometro").textContent =
+
+  document.getElementById(
+    "cronometro"
+  ).textContent =
     `${String(minutos).padStart(2, "0")}:${String(segundos).padStart(2, "0")}`;
+
 
   if (tempo <= 0) {
 
     finalizarTeste();
 
+    return;
   }
+
+
+  tempo--;
 
 }
 
 
-function finalizarTeste() {
+/* ==================================================
+   FINALIZAR TESTE
+   ================================================== */
 
-  clearInterval(intervalo);
+async function finalizarTeste() {
 
-  document.getElementById("teste").style.display = "none";
+  if (intervalo) {
 
-  document.getElementById("resultado").style.display = "block";
+    clearInterval(intervalo);
 
-  console.log("Nome:", nome);
+    intervalo = null;
 
-  console.log("Respostas:", respostas);
+  }
+
+
+  /* CALCULA OS ACERTOS */
+
+  let acertos = 0;
+
+
+  respostas.forEach(
+    (resposta, index) => {
+
+      if (
+        questoes[index] &&
+        resposta ===
+          questoes[index].correta
+      ) {
+
+        acertos++;
+
+      }
+
+    }
+  );
+
+
+  /* SALVA O RESULTADO */
+
+  if (attemptId) {
+
+    const resultado =
+      await supabaseClient
+        .from("attempts")
+        .update({
+
+          score: acertos,
+
+          finished_at:
+            new Date().toISOString()
+
+        })
+        .eq(
+          "id",
+          attemptId
+        );
+
+
+    if (resultado.error) {
+
+      console.error(
+        resultado.error
+      );
+
+    }
+
+  }
+
+
+  /* NÃO MOSTRA A PONTUAÇÃO */
+
+  document.getElementById(
+    "teste"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "resultado"
+  ).style.display =
+    "block";
 
 }
 
