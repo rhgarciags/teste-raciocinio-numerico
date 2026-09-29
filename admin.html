@@ -243,6 +243,11 @@ tr:hover {
 
 <div class="container">
 
+
+<!-- =====================================================
+     LOGIN
+===================================================== -->
+
 <section id="login">
 
     <h1>Painel Administrativo</h1>
@@ -288,6 +293,10 @@ tr:hover {
 </section>
 
 
+<!-- =====================================================
+     PAINEL
+===================================================== -->
+
 <section id="painel">
 
     <button
@@ -310,6 +319,10 @@ tr:hover {
         Selecione o teste que deseja consultar:
     </p>
 
+
+    <!-- =================================================
+         TESTES
+    ================================================== -->
 
     <div class="seletor-testes">
 
@@ -336,6 +349,10 @@ tr:hover {
         Selecione um teste
     </h2>
 
+
+    <!-- =================================================
+         RESULTADOS
+    ================================================== -->
 
     <div id="areaResultados">
 
@@ -407,6 +424,10 @@ tr:hover {
 </section>
 
 
+<!-- =====================================================
+     ASSINATURA
+===================================================== -->
+
 <div class="assinatura">
 
     Desenvolvido por Wemerson Leal
@@ -420,7 +441,7 @@ tr:hover {
 <script>
 
 /* =========================================================
-   RACIOCÍNIO NUMÉRICO
+   CONFIGURAÇÃO - RACIOCÍNIO NUMÉRICO
 ========================================================= */
 
 const NUMERICO_URL =
@@ -431,7 +452,7 @@ const NUMERICO_KEY =
 
 
 /* =========================================================
-   NEGOCIAÇÃO
+   CONFIGURAÇÃO - NEGOCIAÇÃO
 ========================================================= */
 
 const NEGOCIACAO_URL =
@@ -451,6 +472,8 @@ let testeAtual = null;
 
 let todosResultados = [];
 
+let candidatosNegociacao = [];
+
 
 /* =========================================================
    LOGIN
@@ -459,18 +482,27 @@ let todosResultados = [];
 async function entrar() {
 
     const email =
-        document.getElementById("email").value.trim();
+        document
+        .getElementById("email")
+        .value
+        .trim();
 
     const senha =
-        document.getElementById("senha").value;
+        document
+        .getElementById("senha")
+        .value;
 
     const mensagem =
-        document.getElementById("mensagemLogin");
+        document
+        .getElementById("mensagemLogin");
 
     const botao =
-        document.getElementById("botaoEntrar");
+        document
+        .getElementById("botaoEntrar");
+
 
     mensagem.textContent = "";
+
 
     if (!email || !senha) {
 
@@ -479,6 +511,7 @@ async function entrar() {
 
         return;
     }
+
 
     botao.disabled = true;
 
@@ -496,15 +529,26 @@ async function entrar() {
                     method: "POST",
 
                     headers: {
-                        "apikey": NUMERICO_KEY,
-                        "Content-Type": "application/json",
-                        "Accept": "application/json"
+
+                        "apikey":
+                            NUMERICO_KEY,
+
+                        "Content-Type":
+                            "application/json",
+
+                        "Accept":
+                            "application/json"
+
                     },
 
-                    body: JSON.stringify({
-                        email: email,
-                        password: senha
-                    })
+                    body:
+                        JSON.stringify({
+
+                            email: email,
+
+                            password: senha
+
+                        })
                 }
             );
 
@@ -512,7 +556,9 @@ async function entrar() {
         const texto =
             await resposta.text();
 
+
         let dados = {};
+
 
         try {
 
@@ -531,10 +577,15 @@ async function entrar() {
         if (!resposta.ok) {
 
             throw new Error(
+
                 dados.error_description ||
+
                 dados.msg ||
+
                 dados.message ||
+
                 "E-mail ou senha incorretos."
+
             );
         }
 
@@ -574,9 +625,11 @@ async function entrar() {
             erro
         );
 
+
         mensagem.textContent =
             "Não foi possível fazer login.\n\n" +
             erro.message;
+
 
         botao.disabled = false;
 
@@ -594,12 +647,14 @@ function mostrarPainel() {
 
     document.getElementById(
         "login"
-    ).style.display = "none";
+    ).style.display =
+        "none";
 
 
     document.getElementById(
         "painel"
-    ).style.display = "block";
+    ).style.display =
+        "block";
 
 
     const email =
@@ -621,35 +676,51 @@ function mostrarPainel() {
    SELECIONAR TESTE
 ========================================================= */
 
-function selecionarTeste(teste) {
+function selecionarTeste(
+    teste
+) {
 
     testeAtual =
         teste;
+
 
     todosResultados =
         [];
 
 
+    candidatosNegociacao =
+        [];
+
+
     document.getElementById(
         "pesquisaNome"
-    ).value = "";
+    ).value =
+        "";
 
 
     document.getElementById(
         "botaoNumerico"
-    ).classList.remove("ativo");
+    ).classList.remove(
+        "ativo"
+    );
 
 
     document.getElementById(
         "botaoNegociacao"
-    ).classList.remove("ativo");
+    ).classList.remove(
+        "ativo"
+    );
 
 
-    if (teste === "numerico") {
+    if (
+        teste === "numerico"
+    ) {
 
         document.getElementById(
             "botaoNumerico"
-        ).classList.add("ativo");
+        ).classList.add(
+            "ativo"
+        );
 
 
         document.getElementById(
@@ -664,15 +735,25 @@ function selecionarTeste(teste) {
 
             <tr>
 
-                <th>Candidato</th>
+                <th>
+                    Candidato
+                </th>
 
-                <th>Questões</th>
+                <th>
+                    Questões
+                </th>
 
-                <th>Pontuação</th>
+                <th>
+                    Pontuação
+                </th>
 
-                <th>Taxa de aproveitamento</th>
+                <th>
+                    Taxa de aproveitamento
+                </th>
 
-                <th>Status</th>
+                <th>
+                    Status
+                </th>
 
             </tr>
 
@@ -681,11 +762,15 @@ function selecionarTeste(teste) {
     }
 
 
-    if (teste === "negociacao") {
+    if (
+        teste === "negociacao"
+    ) {
 
         document.getElementById(
             "botaoNegociacao"
-        ).classList.add("ativo");
+        ).classList.add(
+            "ativo"
+        );
 
 
         document.getElementById(
@@ -700,15 +785,25 @@ function selecionarTeste(teste) {
 
             <tr>
 
-                <th>Candidato</th>
+                <th>
+                    Candidato
+                </th>
 
-                <th>Questões</th>
+                <th>
+                    Questões
+                </th>
 
-                <th>Pontuação</th>
+                <th>
+                    Pontuação
+                </th>
 
-                <th>Classificação</th>
+                <th>
+                    Classificação
+                </th>
 
-                <th>Status</th>
+                <th>
+                    Status
+                </th>
 
             </tr>
 
@@ -734,7 +829,9 @@ async function carregarResultados() {
 
 
     const status =
-        document.getElementById("status");
+        document.getElementById(
+            "status"
+        );
 
 
     status.textContent =
@@ -743,44 +840,32 @@ async function carregarResultados() {
 
     try {
 
-        let url = "";
-
-        let chave = "";
-
-        let consulta = "";
-
-
         /* =================================================
            RACIOCÍNIO NUMÉRICO
-
-           Aqui usamos o token porque o login
-           pertence a este mesmo projeto.
         ================================================= */
 
-        if (testeAtual === "numerico") {
+        if (
+            testeAtual === "numerico"
+        ) {
 
-            url =
-                NUMERICO_URL;
-
-            chave =
-                NUMERICO_KEY;
-
-
-            consulta =
+            const consulta =
                 "/rest/v1/attempts" +
                 "?select=id,candidate_id,score,total_questions,candidates(name)";
 
 
             const resposta =
                 await fetch(
-                    url + consulta,
+
+                    NUMERICO_URL +
+                    consulta,
+
                     {
                         method: "GET",
 
                         headers: {
 
                             "apikey":
-                                chave,
+                                NUMERICO_KEY,
 
                             "Authorization":
                                 "Bearer " +
@@ -794,12 +879,14 @@ async function carregarResultados() {
 
                         }
                     }
+
                 );
 
 
             await processarResposta(
                 resposta
             );
+
 
             return;
         }
@@ -807,58 +894,220 @@ async function carregarResultados() {
 
         /* =================================================
            NEGOCIAÇÃO
-
-           IMPORTANTE:
-
-           NÃO usamos o accessToken do projeto
-           Numérico aqui.
-
-           A política "Painel pode consultar
-           resultados" permite SELECT para anon.
         ================================================= */
 
-        if (testeAtual === "negociacao") {
+        if (
+            testeAtual === "negociacao"
+        ) {
 
-            url =
-                NEGOCIACAO_URL;
+            /*
+               PRIMEIRO:
 
-            chave =
-                NEGOCIACAO_KEY;
+               Busca as tentativas.
+            */
 
-
-            consulta =
-                "/rest/v1/attempts" +
-                "?select=id,candidate_id,score,total_questions,classification";
-
-
-            const resposta =
+            const respostaAttempts =
                 await fetch(
-                    url + consulta,
+
+                    NEGOCIACAO_URL +
+                    "/rest/v1/attempts" +
+                    "?select=id,candidate_id,score,total_questions,classification",
+
                     {
                         method: "GET",
 
                         headers: {
 
                             "apikey":
-                                chave,
+                                NEGOCIACAO_KEY,
 
                             "Content-Type":
                                 "application/json",
 
                             "Accept":
-                                "application/json",
-
-                            "Cache-Control":
-                                "no-cache"
+                                "application/json"
 
                         }
+                    }
+
+                );
+
+
+            const textoAttempts =
+                await respostaAttempts.text();
+
+
+            let dadosAttempts = [];
+
+
+            try {
+
+                dadosAttempts =
+                    textoAttempts
+                    ? JSON.parse(textoAttempts)
+                    : [];
+
+            } catch {
+
+                dadosAttempts = [];
+
+            }
+
+
+            if (
+                !respostaAttempts.ok
+            ) {
+
+                throw new Error(
+
+                    dadosAttempts.message ||
+
+                    dadosAttempts.hint ||
+
+                    dadosAttempts.details ||
+
+                    "Erro ao consultar attempts."
+
+                );
+
+            }
+
+
+            /*
+               SEGUNDO:
+
+               Busca os candidatos separadamente.
+            */
+
+            const respostaCandidates =
+                await fetch(
+
+                    NEGOCIACAO_URL +
+                    "/rest/v1/candidates" +
+                    "?select=id,name",
+
+                    {
+                        method: "GET",
+
+                        headers: {
+
+                            "apikey":
+                                NEGOCIACAO_KEY,
+
+                            "Content-Type":
+                                "application/json",
+
+                            "Accept":
+                                "application/json"
+
+                        }
+                    }
+
+                );
+
+
+            const textoCandidates =
+                await respostaCandidates.text();
+
+
+            let dadosCandidates = [];
+
+
+            try {
+
+                dadosCandidates =
+                    textoCandidates
+                    ? JSON.parse(textoCandidates)
+                    : [];
+
+            } catch {
+
+                dadosCandidates = [];
+
+            }
+
+
+            if (
+                !respostaCandidates.ok
+            ) {
+
+                throw new Error(
+
+                    dadosCandidates.message ||
+
+                    dadosCandidates.hint ||
+
+                    dadosCandidates.details ||
+
+                    "Erro ao consultar candidates."
+
+                );
+
+            }
+
+
+            candidatosNegociacao =
+                Array.isArray(
+                    dadosCandidates
+                )
+                ? dadosCandidates
+                : [];
+
+
+            /*
+               TERCEIRO:
+
+               Junta o nome ao resultado
+               através do candidate_id.
+            */
+
+            todosResultados =
+                (Array.isArray(
+                    dadosAttempts
+                )
+                ? dadosAttempts
+                : [])
+                .map(
+                    function(attempt) {
+
+                        const candidato =
+                            candidatosNegociacao.find(
+                                function(candidato) {
+
+                                    return String(
+                                        candidato.id
+                                    ) === String(
+                                        attempt.candidate_id
+                                    );
+
+                                }
+                            );
+
+
+                        return {
+
+                            ...attempt,
+
+                            candidates:
+                                candidato
+                                ? {
+                                    name:
+                                        candidato.name
+                                  }
+                                : null
+
+                        };
+
                     }
                 );
 
 
-            await processarResposta(
-                resposta
-            );
+            status.textContent =
+                "";
+
+
+            filtrarResultados();
+
 
             return;
         }
@@ -888,7 +1137,7 @@ async function carregarResultados() {
 
 
 /* =========================================================
-   PROCESSAR RESPOSTA
+   PROCESSAR RESPOSTA DO NUMÉRICO
 ========================================================= */
 
 async function processarResposta(
@@ -896,7 +1145,9 @@ async function processarResposta(
 ) {
 
     const status =
-        document.getElementById("status");
+        document.getElementById(
+            "status"
+        );
 
 
     const texto =
@@ -913,23 +1164,28 @@ async function processarResposta(
             ? JSON.parse(texto)
             : [];
 
-    }
-
-    catch {
+    } catch {
 
         dados = [];
 
     }
 
 
-    if (!resposta.ok) {
+    if (
+        !resposta.ok
+    ) {
 
         throw new Error(
+
             dados.message ||
+
             dados.hint ||
+
             dados.details ||
+
             "HTTP " +
             resposta.status
+
         );
 
     }
@@ -950,7 +1206,7 @@ async function processarResposta(
 
 
 /* =========================================================
-   FILTRAR
+   FILTRAR RESULTADOS
 ========================================================= */
 
 function filtrarResultados() {
@@ -969,6 +1225,7 @@ function filtrarResultados() {
 
     const filtrados =
         todosResultados.filter(
+
             function(item) {
 
                 const nome =
@@ -983,6 +1240,7 @@ function filtrarResultados() {
                     .includes(texto);
 
             }
+
         );
 
 
@@ -1016,7 +1274,9 @@ function mostrarResultados(
         "";
 
 
-    if (dados.length === 0) {
+    if (
+        dados.length === 0
+    ) {
 
         contador.textContent =
             "Nenhum candidato encontrado.";
@@ -1039,6 +1299,7 @@ function mostrarResultados(
 
         `;
 
+
         return;
     }
 
@@ -1051,6 +1312,7 @@ function mostrarResultados(
 
 
     dados.forEach(
+
         function(item) {
 
             const linha =
@@ -1080,25 +1342,44 @@ function mostrarResultados(
                RACIOCÍNIO NUMÉRICO
             ================================================= */
 
-            if (testeAtual === "numerico") {
+            if (
+                testeAtual === "numerico"
+            ) {
 
                 let aproveitamento =
                     "—";
 
 
                 if (
+
                     item.score !== null &&
+
                     item.score !== undefined &&
+
                     Number(total) > 0
+
                 ) {
 
                     aproveitamento =
+
                         Math.round(
+
                             (
-                                Number(item.score) /
-                                Number(total)
+
+                                Number(
+                                    item.score
+                                )
+
+                                /
+
+                                Number(
+                                    total
+                                )
+
                             ) * 100
+
                         ) + "%";
+
                 }
 
 
@@ -1141,7 +1422,9 @@ function mostrarResultados(
                NEGOCIAÇÃO
             ================================================= */
 
-            if (testeAtual === "negociacao") {
+            if (
+                testeAtual === "negociacao"
+            ) {
 
                 const classificacao =
                     item.classification ||
@@ -1170,7 +1453,9 @@ function mostrarResultados(
 
                         <span class="badge">
                             ${escaparHTML(
-                                String(classificacao)
+                                String(
+                                    classificacao
+                                )
                             )}
                         </span>
 
@@ -1194,6 +1479,7 @@ function mostrarResultados(
             );
 
         }
+
     );
 }
 
@@ -1254,6 +1540,10 @@ function sair() {
         [];
 
 
+    candidatosNegociacao =
+        [];
+
+
     localStorage.removeItem(
         "painel_access_token"
     );
@@ -1305,11 +1595,17 @@ function sair() {
     ).textContent =
         "";
 
+
+    document.getElementById(
+        "status"
+    ).textContent =
+        "Selecione um teste para carregar os resultados.";
+
 }
 
 
 /* =========================================================
-   RECUPERAR SESSÃO
+   RECUPERAR LOGIN
 ========================================================= */
 
 const tokenSalvo =
@@ -1318,7 +1614,9 @@ const tokenSalvo =
     );
 
 
-if (tokenSalvo) {
+if (
+    tokenSalvo
+) {
 
     accessToken =
         tokenSalvo;
