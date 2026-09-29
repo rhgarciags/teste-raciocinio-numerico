@@ -13,44 +13,53 @@
 
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f6f8;
-      color: #222;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f3f4f6;
+      color: #1f2937;
     }
 
     .container {
-      max-width: 700px;
-      margin: 50px auto;
+      max-width: 720px;
+      margin: 40px auto;
       padding: 30px;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      background: #ffffff;
+      border-radius: 14px;
+      box-shadow: 0 5px 25px rgba(0,0,0,.08);
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 30px;
+      color: #111827;
     }
 
     h2 {
-      line-height: 1.4;
+      line-height: 1.5;
     }
 
-    input[type="text"] {
+    p {
+      line-height: 1.6;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    #nome {
       width: 100%;
       padding: 14px;
-      font-size: 16px;
-      border: 1px solid #ccc;
+      margin-top: 8px;
+      margin-bottom: 20px;
+      border: 1px solid #d1d5db;
       border-radius: 8px;
-      margin: 10px 0 20px;
+      font-size: 16px;
     }
 
     button {
+      border: none;
+      border-radius: 8px;
+      padding: 14px 24px;
       background: #2563eb;
       color: white;
-      border: none;
-      padding: 14px 22px;
-      border-radius: 8px;
       font-size: 16px;
       cursor: pointer;
     }
@@ -60,11 +69,11 @@
     }
 
     button:disabled {
-      background: #999;
+      background: #9ca3af;
       cursor: not-allowed;
     }
 
-    .center {
+    .centralizar {
       text-align: center;
     }
 
@@ -73,39 +82,57 @@
       display: none;
     }
 
-    .topo {
+    .cabecalho-teste {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 30px;
+      align-items: center;
+      margin-bottom: 25px;
       font-weight: bold;
     }
 
     #cronometro {
       color: #dc2626;
+      font-size: 20px;
     }
 
     .alternativa {
       display: block;
+      padding: 15px;
       margin: 12px 0;
-      padding: 14px;
-      border: 1px solid #ddd;
+      border: 1px solid #d1d5db;
       border-radius: 8px;
       cursor: pointer;
+      font-weight: normal;
     }
 
     .alternativa:hover {
-      background: #f0f4ff;
+      background: #eff6ff;
+      border-color: #2563eb;
     }
 
     .alternativa input {
-      width: auto;
-      margin: 0 10px 0 0;
+      margin-right: 10px;
     }
 
-    .mensagem {
+    #mensagem {
       text-align: center;
-      margin-top: 20px;
-      color: #555;
+      color: #dc2626;
+      margin-top: 15px;
+    }
+
+    .progresso {
+      height: 8px;
+      background: #e5e7eb;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      overflow: hidden;
+    }
+
+    #barraProgresso {
+      height: 100%;
+      width: 2.5%;
+      background: #2563eb;
+      transition: width .2s;
     }
   </style>
 </head>
@@ -114,18 +141,24 @@
 
 <div class="container">
 
-  <!-- TELA INICIAL -->
+  <!-- ================================
+       INÍCIO
+       ================================= -->
 
-  <div id="inicio">
+  <section id="inicio">
 
     <h1>Teste de Raciocínio Numérico</h1>
 
     <p>
-      Você terá <strong>5 minutos</strong> para responder ao teste.
+      Este teste possui <strong>40 questões</strong>.
     </p>
 
     <p>
-      Leia cada questão atentamente e selecione uma alternativa.
+      Você terá <strong>5 minutos</strong> para concluir.
+    </p>
+
+    <p>
+      Informe seu nome para começar.
     </p>
 
     <label for="nome">Nome</label>
@@ -137,7 +170,7 @@
       autocomplete="name"
     >
 
-    <div class="center">
+    <div class="centralizar">
 
       <button
         id="botaoIniciar"
@@ -148,19 +181,18 @@
 
     </div>
 
-    <p
-      id="mensagemInicio"
-      class="mensagem"
-    ></p>
+    <div id="mensagem"></div>
 
-  </div>
+  </section>
 
 
-  <!-- TELA DO TESTE -->
+  <!-- ================================
+       TESTE
+       ================================= -->
 
-  <div id="teste">
+  <section id="teste">
 
-    <div class="topo">
+    <div class="cabecalho-teste">
 
       <span id="numeroQuestao">
         Questão 1 de 40
@@ -172,6 +204,10 @@
 
     </div>
 
+    <div class="progresso">
+      <div id="barraProgresso"></div>
+    </div>
+
     <h2 id="pergunta"></h2>
 
     <div id="alternativas"></div>
@@ -179,66 +215,49 @@
     <br>
 
     <button onclick="proximaQuestao()">
-      Próxima
+      Próxima questão
     </button>
 
-  </div>
+  </section>
 
 
-  <!-- TELA FINAL -->
+  <!-- ================================
+       RESULTADO
+       ================================= -->
 
-  <div
-    id="resultado"
-    class="center"
-  >
+  <section id="resultado" class="centralizar">
 
     <h1>Teste concluído</h1>
+
+    <p>
+      Obrigado por realizar o teste.
+    </p>
 
     <p>
       Suas respostas foram registradas.
     </p>
 
-    <p>
-      O resultado será analisado posteriormente.
-    </p>
-
-  </div>
+  </section>
 
 </div>
 
 
-<!-- BIBLIOTECA DO SUPABASE -->
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-
 <script>
 
-/* ==================================================
+/* =====================================================
    CONFIGURAÇÃO DO SUPABASE
-   ================================================== */
+   ===================================================== */
 
 const SUPABASE_URL =
-  "https://rfzauftsgqidtzwtdjlp.supabase.co/rest/v1/";
+  "https://rfzauftsgqidtzwtdjlp.supabase.co";
 
 const SUPABASE_KEY =
   "sb_publishable_QAHvlE6BbMgm5nc9WzYJEQ_7f_YvkrU";
 
 
-/* ==================================================
-   CONEXÃO COM O SUPABASE
-   ================================================== */
-
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
-
-
-/* ==================================================
+/* =====================================================
    VARIÁVEIS
-   ================================================== */
+   ===================================================== */
 
 let nome = "";
 
@@ -246,86 +265,279 @@ let questaoAtual = 0;
 
 let respostas = [];
 
-let tempo = 300;
+let tempoRestante = 300;
 
 let intervalo = null;
 
-let candidateId = null;
-
-let attemptId = null;
+let candidatoId = null;
 
 
-/* ==================================================
-   QUESTÕES TEMPORÁRIAS
-   ==================================================
-
-   Estas serão substituídas posteriormente
-   pelas suas 40 questões.
-   ================================================== */
+/* =====================================================
+   40 QUESTÕES
+   ===================================================== */
 
 const questoes = [
 
   {
-    pergunta:
-      "Uma empresa vendeu 250 unidades em janeiro e 300 em fevereiro. Qual foi o aumento percentual?",
-
-    alternativas: [
-      "10%",
-      "15%",
-      "20%",
-      "25%"
-    ],
-
+    pergunta: "Quanto é 15% de 200?",
+    alternativas: ["20", "25", "30", "35"],
     correta: 2
   },
 
   {
-    pergunta:
-      "Quanto é 15% de 200?",
-
-    alternativas: [
-      "20",
-      "25",
-      "30",
-      "35"
-    ],
-
+    pergunta: "Uma mercadoria custa R$ 80 e recebeu aumento de 25%. Qual é o novo preço?",
+    alternativas: ["R$ 90", "R$ 95", "R$ 100", "R$ 105"],
     correta: 2
   },
 
   {
-    pergunta:
-      "Se 5 produtos custam R$ 100, quanto custam 8 produtos pelo mesmo preço unitário?",
-
-    alternativas: [
-      "R$ 120",
-      "R$ 140",
-      "R$ 160",
-      "R$ 180"
-    ],
-
+    pergunta: "Se 5 produtos custam R$ 100, quanto custam 8 produtos pelo mesmo preço unitário?",
+    alternativas: ["R$ 120", "R$ 140", "R$ 160", "R$ 180"],
     correta: 2
+  },
+
+  {
+    pergunta: "Qual é o próximo número: 2, 4, 8, 16, ...?",
+    alternativas: ["20", "24", "30", "32"],
+    correta: 3
+  },
+
+  {
+    pergunta: "Qual é 25% de 240?",
+    alternativas: ["40", "50", "60", "70"],
+    correta: 2
+  },
+
+  {
+    pergunta: "Uma empresa tinha 500 funcionários e reduziu o quadro em 10%. Quantos funcionários permaneceram?",
+    alternativas: ["450", "460", "470", "480"],
+    correta: 0
+  },
+
+  {
+    pergunta: "Se 3 máquinas produzem 900 peças em uma hora, quantas peças produzem 5 máquinas no mesmo período?",
+    alternativas: ["1.200", "1.350", "1.500", "1.800"],
+    correta: 2
+  },
+
+  {
+    pergunta: "Qual é a média de 10, 20 e 30?",
+    alternativas: ["15", "20", "25", "30"],
+    correta: 1
+  },
+
+  {
+    pergunta: "Um produto de R$ 200 recebeu desconto de 15%. Qual será o preço final?",
+    alternativas: ["R$ 160", "R$ 165", "R$ 170", "R$ 175"],
+    correta: 2
+  },
+
+  {
+    pergunta: "Qual número completa a sequência: 5, 10, 15, 20, ...?",
+    alternativas: ["22", "24", "25", "30"],
+    correta: 2
+  },
+
+  {
+    pergunta: "Quanto é 3/4 de 100?",
+    alternativas: ["50", "60", "75", "80"],
+    correta: 2
+  },
+
+  {
+    pergunta: "Uma equipe conclui 40 tarefas em 5 dias. Mantendo o mesmo ritmo, quantas tarefas concluirá em 8 dias?",
+    alternativas: ["56", "64", "72", "80"],
+    correta: 1
+  },
+
+  {
+    pergunta: "Quanto é 18% de 500?",
+    alternativas: ["80", "90", "100", "110"],
+    correta: 1
+  },
+
+  {
+    pergunta: "Se 12 funcionários realizam um trabalho em 10 dias, mantendo a mesma produtividade, quantos dias 6 funcionários levariam?",
+    alternativas: ["5", "10", "15", "20"],
+    correta: 3
+  },
+
+  {
+    pergunta: "Qual é o próximo número: 3, 6, 12, 24, ...?",
+    alternativas: ["36", "42", "48", "54"],
+    correta: 2
+  },
+
+  {
+    pergunta: "Uma receita usa 400 g de farinha para 8 porções. Quantos gramas são necessários para 12 porções?",
+    alternativas: ["500 g", "550 g", "600 g", "650 g"],
+    correta: 2
+  },
+
+  {
+    pergunta: "Um salário de R$ 2.000 aumentou 10%. Qual é o novo salário?",
+    alternativas: ["R$ 2.100", "R$ 2.200", "R$ 2.300", "R$ 2.400"],
+    correta: 1
+  },
+
+  {
+    pergunta: "Qual é a diferença entre 850 e 375?",
+    alternativas: ["425", "450", "475", "500"],
+    correta: 2
+  },
+
+  {
+    pergunta: "Se um carro percorre 240 km com 20 litros, quantos quilômetros percorre por litro?",
+    alternativas: ["10", "12", "14", "16"],
+    correta: 1
+  },
+
+  {
+    pergunta: "Qual é 40% de 350?",
+    alternativas: ["120", "130", "140", "150"],
+    correta: 2
+  },
+
+  {
+    pergunta: "Uma loja vendeu 120 unidades na segunda-feira e 180 na terça. Qual foi o aumento percentual?",
+    alternativas: ["25%", "40%", "50%", "60%"],
+    correta: 2
+  },
+
+  {
+    pergunta: "Qual é o próximo número: 100, 90, 80, 70, ...?",
+    alternativas: ["50", "55", "60", "65"],
+    correta: 2
+  },
+
+  {
+    pergunta: "Se 4 caixas contêm 96 produtos, quantos produtos existem em 7 caixas iguais?",
+    alternativas: ["144", "156", "168", "192"],
+    correta: 2
+  },
+
+  {
+    pergunta: "Quanto é 2,5 × 20?",
+    alternativas: ["40", "45", "50", "55"],
+    correta: 2
+  },
+
+  {
+    pergunta: "Uma empresa faturou R$ 50.000 e gastou R$ 35.000. Qual foi o lucro?",
+    alternativas: ["R$ 10.000", "R$ 12.000", "R$ 15.000", "R$ 18.000"],
+    correta: 2
+  },
+
+  {
+    pergunta: "Qual é 30% de 450?",
+    alternativas: ["125", "135", "145", "155"],
+    correta: 1
+  },
+
+  {
+    pergunta: "Se 8 trabalhadores produzem 1.600 unidades, quantas unidades 10 trabalhadores produziriam no mesmo ritmo?",
+    alternativas: ["1.800", "2.000", "2.200", "2.400"],
+    correta: 1
+  },
+
+  {
+    pergunta: "Um número aumentado em 20% resulta em 120. Qual era o número original?",
+    alternativas: ["90", "100", "110", "115"],
+    correta: 1
+  },
+
+  {
+    pergunta: "Qual é a média de 15, 25, 35 e 45?",
+    alternativas: ["25", "30", "35", "40"],
+    correta: 1
+  },
+
+  {
+    pergunta: "Uma empresa reduziu um preço de R$ 500 para R$ 425. Qual foi o percentual de desconto?",
+    alternativas: ["10%", "12%", "15%", "20%"],
+    correta: 2
+  },
+
+  {
+    pergunta: "Qual número completa a sequência: 4, 9, 14, 19, ...?",
+    alternativas: ["22", "23", "24", "25"],
+    correta: 2
+  },
+
+  {
+    pergunta: "Se 6 livros custam R$ 180, quanto custam 10 livros iguais?",
+    alternativas: ["R$ 250", "R$ 280", "R$ 300", "R$ 320"],
+    correta: 2
+  },
+
+  {
+    pergunta: "Quanto é 12,5% de 400?",
+    alternativas: ["40", "50", "60", "70"],
+    correta: 1
+  },
+
+  {
+    pergunta: "Uma população passou de 2.000 para 2.400 pessoas. Qual foi o crescimento percentual?",
+    alternativas: ["10%", "15%", "20%", "25%"],
+    correta: 2
+  },
+
+  {
+    pergunta: "Se uma pessoa economiza R$ 150 por mês, quanto economizará em 8 meses?",
+    alternativas: ["R$ 900", "R$ 1.000", "R$ 1.200", "R$ 1.500"],
+    correta: 2
+  },
+
+  {
+    pergunta: "Qual é o próximo número: 81, 27, 9, 3, ...?",
+    alternativas: ["0", "1", "2", "4"],
+    correta: 1
+  },
+
+  {
+    pergunta: "Um investimento de R$ 1.000 rendeu 8%. Qual foi o rendimento?",
+    alternativas: ["R$ 60", "R$ 70", "R$ 80", "R$ 90"],
+    correta: 2
+  },
+
+  {
+    pergunta: "Se 2 funcionários fazem um trabalho em 12 horas, quantas horas seriam necessárias para 4 funcionários, mantendo a mesma produtividade?",
+    alternativas: ["3", "4", "6", "8"],
+    correta: 2
+  },
+
+  {
+    pergunta: "Qual é 35% de 200?",
+    alternativas: ["60", "65", "70", "75"],
+    correta: 2
+  },
+
+  {
+    pergunta: "Um produto de R$ 150 passou a custar R$ 180. Qual foi o aumento percentual?",
+    alternativas: ["15%", "20%", "25%", "30%"],
+    correta: 1
   }
 
 ];
 
 
-/* ==================================================
+/* =====================================================
    INICIAR TESTE
-   ================================================== */
+   ===================================================== */
 
 async function iniciarTeste() {
 
-  nome =
-    document
-      .getElementById("nome")
-      .value
-      .trim();
+  const campoNome =
+    document.getElementById("nome");
+
+  nome = campoNome.value.trim();
 
 
   if (!nome) {
 
-    alert("Digite seu nome para iniciar.");
+    mostrarMensagem(
+      "Digite seu nome para iniciar."
+    );
 
     return;
   }
@@ -337,90 +549,101 @@ async function iniciarTeste() {
   botao.disabled = true;
 
 
-  document.getElementById(
-    "mensagemInicio"
-  ).textContent =
-    "Iniciando teste...";
+  mostrarMensagem(
+    "Registrando candidato..."
+  );
 
 
   try {
 
-    /* CADASTRA O CANDIDATO */
+    /*
+     * ENVIA O NOME PARA O SUPABASE
+     */
 
-    const resultadoCandidato =
-      await supabaseClient
-        .from("candidates")
-        .insert({
+    const resposta = await fetch(
+      SUPABASE_URL + "/rest/v1/candidates",
+      {
+        method: "POST",
+
+        headers: {
+          "apikey": SUPABASE_KEY,
+          "Authorization": "Bearer " + SUPABASE_KEY,
+          "Content-Type": "application/json",
+          "Prefer": "return=representation"
+        },
+
+        body: JSON.stringify({
           name: nome
         })
-        .select()
-        .single();
+      }
+    );
 
 
-    if (resultadoCandidato.error) {
+    const texto =
+      await resposta.text();
+
+
+    if (!resposta.ok) {
 
       console.error(
-        resultadoCandidato.error
+        "Erro Supabase:",
+        resposta.status,
+        texto
       );
 
       throw new Error(
-        "Não foi possível registrar o candidato."
+        "Supabase " +
+        resposta.status +
+        ": " +
+        texto
       );
     }
 
 
-    candidateId =
-      resultadoCandidato.data.id;
+    let dados = null;
 
+    try {
 
-    /* CRIA A TENTATIVA */
+      dados =
+        JSON.parse(texto);
 
-    const resultadoTentativa =
-      await supabaseClient
-        .from("attempts")
-        .insert({
-          candidate_id: candidateId,
-          total_questions: 40
-        })
-        .select()
-        .single();
+    } catch (e) {
 
+      dados = null;
 
-    if (resultadoTentativa.error) {
-
-      console.error(
-        resultadoTentativa.error
-      );
-
-      throw new Error(
-        "Não foi possível iniciar a tentativa."
-      );
     }
 
 
-    attemptId =
-      resultadoTentativa.data.id;
+    if (
+      Array.isArray(dados) &&
+      dados.length > 0
+    ) {
+
+      candidatoId =
+        dados[0].id;
+
+    }
 
 
-    /* MOSTRA O TESTE */
+    /*
+     * COMEÇA O TESTE
+     */
 
     document.getElementById(
       "inicio"
-    ).style.display =
-      "none";
+    ).style.display = "none";
 
 
     document.getElementById(
       "teste"
-    ).style.display =
-      "block";
+    ).style.display = "block";
 
 
     questaoAtual = 0;
 
     respostas = [];
 
-    tempo = 300;
+    tempoRestante = 300;
 
 
     mostrarQuestao();
@@ -434,67 +657,72 @@ async function iniciarTeste() {
         1000
       );
 
+  }
 
-  } catch (erro) {
+  catch (erro) {
 
     console.error(erro);
 
 
-  alert(
-  "ERRO SUPABASE:\n\n" +
-  erro.message +
-  "\n\nDetalhes:\n" +
-  JSON.stringify(erro, null, 2)
-);
+    mostrarMensagem(
+      "Não foi possível iniciar o teste."
+    );
 
+
+    /*
+     * Mostra o erro real na tela.
+     * Isso nos permitirá corrigir exatamente
+     * o problema caso ainda exista.
+     */
+
+    alert(
+      "Erro ao conectar ao Supabase:\n\n" +
+      erro.message
     );
 
 
     botao.disabled = false;
-
-
-    document.getElementById(
-      "mensagemInicio"
-    ).textContent = "";
 
   }
 
 }
 
 
-/* ==================================================
+/* =====================================================
    MOSTRAR QUESTÃO
-   ================================================== */
+   ===================================================== */
 
 function mostrarQuestao() {
 
-  const q =
+  const questao =
     questoes[questaoAtual];
 
 
   document.getElementById(
     "numeroQuestao"
   ).textContent =
-    `Questão ${questaoAtual + 1} de 40`;
+    "Questão " +
+    (questaoAtual + 1) +
+    " de 40";
 
 
   document.getElementById(
     "pergunta"
   ).textContent =
-    q.pergunta;
+    questao.pergunta;
 
 
-  const container =
+  const alternativas =
     document.getElementById(
       "alternativas"
     );
 
 
-  container.innerHTML = "";
+  alternativas.innerHTML = "";
 
 
-  q.alternativas.forEach(
-    (alternativa, index) => {
+  questao.alternativas.forEach(
+    function(alternativa, indice) {
 
       const label =
         document.createElement("label");
@@ -504,29 +732,41 @@ function mostrarQuestao() {
         "alternativa";
 
 
-      label.innerHTML = `
+      label.innerHTML =
+        `
         <input
           type="radio"
           name="resposta"
-          value="${index}"
+          value="${indice}"
         >
+
         ${alternativa}
-      `;
+        `;
 
 
-      container.appendChild(label);
+      alternativas.appendChild(label);
 
     }
   );
 
+
+  const percentual =
+    ((questaoAtual + 1) / 40) * 100;
+
+
+  document.getElementById(
+    "barraProgresso"
+  ).style.width =
+    percentual + "%";
+
 }
 
 
-/* ==================================================
+/* =====================================================
    PRÓXIMA QUESTÃO
-   ================================================== */
+   ===================================================== */
 
-async function proximaQuestao() {
+function proximaQuestao() {
 
   const selecionada =
     document.querySelector(
@@ -544,25 +784,20 @@ async function proximaQuestao() {
   }
 
 
-  const resposta =
+  respostas[questaoAtual] =
     Number(
       selecionada.value
     );
-
-
-  respostas[questaoAtual] =
-    resposta;
 
 
   questaoAtual++;
 
 
   if (
-    questaoAtual >=
-    questoes.length
+    questaoAtual >= 40
   ) {
 
-    await finalizarTeste();
+    finalizarTeste();
 
     return;
   }
@@ -573,29 +808,31 @@ async function proximaQuestao() {
 }
 
 
-/* ==================================================
+/* =====================================================
    CRONÔMETRO
-   ================================================== */
+   ===================================================== */
 
 function atualizarCronometro() {
 
   const minutos =
     Math.floor(
-      tempo / 60
+      tempoRestante / 60
     );
 
 
   const segundos =
-    tempo % 60;
+    tempoRestante % 60;
 
 
   document.getElementById(
     "cronometro"
   ).textContent =
-    `${String(minutos).padStart(2, "0")}:${String(segundos).padStart(2, "0")}`;
+    String(minutos).padStart(2, "0") +
+    ":" +
+    String(segundos).padStart(2, "0");
 
 
-  if (tempo <= 0) {
+  if (tempoRestante <= 0) {
 
     finalizarTeste();
 
@@ -603,16 +840,16 @@ function atualizarCronometro() {
   }
 
 
-  tempo--;
+  tempoRestante--;
 
 }
 
 
-/* ==================================================
-   FINALIZAR TESTE
-   ================================================== */
+/* =====================================================
+   FINALIZAR
+   ===================================================== */
 
-async function finalizarTeste() {
+function finalizarTeste() {
 
   if (intervalo) {
 
@@ -623,72 +860,27 @@ async function finalizarTeste() {
   }
 
 
-  /* CALCULA OS ACERTOS */
-
-  let acertos = 0;
-
-
-  respostas.forEach(
-    (resposta, index) => {
-
-      if (
-        questoes[index] &&
-        resposta ===
-          questoes[index].correta
-      ) {
-
-        acertos++;
-
-      }
-
-    }
-  );
-
-
-  /* SALVA O RESULTADO */
-
-  if (attemptId) {
-
-    const resultado =
-      await supabaseClient
-        .from("attempts")
-        .update({
-
-          score: acertos,
-
-          finished_at:
-            new Date().toISOString()
-
-        })
-        .eq(
-          "id",
-          attemptId
-        );
-
-
-    if (resultado.error) {
-
-      console.error(
-        resultado.error
-      );
-
-    }
-
-  }
-
-
-  /* NÃO MOSTRA A PONTUAÇÃO */
-
   document.getElementById(
     "teste"
-  ).style.display =
-    "none";
+  ).style.display = "none";
 
 
   document.getElementById(
     "resultado"
-  ).style.display =
-    "block";
+  ).style.display = "block";
+
+}
+
+
+/* =====================================================
+   MENSAGEM
+   ===================================================== */
+
+function mostrarMensagem(texto) {
+
+  document.getElementById(
+    "mensagem"
+  ).textContent = texto;
 
 }
 
@@ -696,4 +888,3 @@ async function finalizarTeste() {
 
 </body>
 </html>
-
