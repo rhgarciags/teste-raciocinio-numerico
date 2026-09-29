@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Teste de Raciocínio Numérico</title>
 
   <style>
+
     * {
       box-sizing: border-box;
     }
@@ -16,15 +23,20 @@
       font-family: Arial, Helvetica, sans-serif;
       background: #f3f4f6;
       color: #1f2937;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
     .container {
+      width: 100%;
       max-width: 720px;
       margin: 40px auto;
       padding: 30px;
       background: #ffffff;
       border-radius: 14px;
       box-shadow: 0 5px 25px rgba(0,0,0,.08);
+      flex: 1;
     }
 
     h1 {
@@ -142,36 +154,65 @@
       text-transform: uppercase;
       margin-bottom: 5px;
     }
+
+    /* ==========================================
+       ASSINATURA
+       ========================================== */
+
+    .assinatura {
+      text-align: center;
+      color: #9ca3af;
+      font-size: 10px;
+      font-weight: normal;
+      margin-top: 25px;
+      padding-bottom: 12px;
+      letter-spacing: 0.2px;
+    }
+
   </style>
+
 </head>
+
 
 <body>
 
+
 <div class="container">
 
-  <!-- ================================
+
+  <!-- ==========================================
        TELA INICIAL
-       ================================= -->
+       ========================================== -->
 
   <section id="inicio">
 
-    <h1>Teste de Raciocínio Numérico</h1>
+    <h1>
+      Teste de Raciocínio Numérico
+    </h1>
 
     <p>
-      Este teste possui <strong>40 questões</strong>.
+      Este teste possui
+      <strong>40 questões</strong>.
     </p>
 
     <p>
-      Você terá <strong>5 minutos</strong> para concluir.
+      Você terá
+      <strong>5 minutos</strong>
+      para concluir.
     </p>
 
     <p>
       Informe seu nome para começar.
     </p>
 
-    <label class="nome-label" for="nome">
+
+    <label
+      class="nome-label"
+      for="nome"
+    >
       Nome
     </label>
+
 
     <input
       type="text"
@@ -179,6 +220,7 @@
       placeholder="Digite seu nome"
       autocomplete="name"
     >
+
 
     <div class="centralizar">
 
@@ -191,16 +233,18 @@
 
     </div>
 
+
     <div id="mensagem"></div>
 
   </section>
 
 
-  <!-- ================================
+  <!-- ==========================================
        TELA DO TESTE
-       ================================= -->
+       ========================================== -->
 
   <section id="teste">
+
 
     <div class="cabecalho-teste">
 
@@ -214,35 +258,51 @@
 
     </div>
 
+
     <div class="progresso">
+
       <div id="barraProgresso"></div>
+
     </div>
+
 
     <div
       id="tipoQuestao"
       class="tipo"
     ></div>
 
+
     <h2 id="pergunta"></h2>
+
 
     <div id="alternativas"></div>
 
+
     <br>
 
-    <button onclick="proximaQuestao()">
+
+    <button
+      onclick="proximaQuestao()"
+    >
       Próxima questão
     </button>
+
 
   </section>
 
 
-  <!-- ================================
+  <!-- ==========================================
        TELA FINAL
-       ================================= -->
+       ========================================== -->
 
-  <section id="resultado" class="centralizar">
+  <section
+    id="resultado"
+    class="centralizar"
+  >
 
-    <h1>Teste concluído</h1>
+    <h1>
+      Teste concluído
+    </h1>
 
     <p>
       Obrigado por realizar o teste.
@@ -254,7 +314,18 @@
 
   </section>
 
+
+  <!-- ==========================================
+       ASSINATURA
+       ========================================== -->
+
+  <div class="assinatura">
+    Desenvolvido por : Wemerson Leal © 2026 - RH Garcia Supermercados.
+  </div>
+
+
 </div>
+
 
 
 <script>
@@ -290,299 +361,298 @@ let tentativaId = null;
 
 
 /* =====================================================
-   40 QUESTÕES
-   25 SOMAS + 15 MULTIPLICAÇÕES
+   QUESTÕES
    ===================================================== */
 
 const questoes = [
 
-  /* ================================
-     SOMAR - 1 a 25
-     ================================= */
+  /* ==========================================
+     SOMAR
+     ========================================== */
 
   {
     tipo: "Somar",
     pergunta: "36 + 54 + 81 = ?",
-    alternativas: ["161", "171", "181", "191"],
+    alternativas: ["181", "171", "161", "191"],
     correta: 1
   },
 
   {
     tipo: "Somar",
     pergunta: "17 + 52 + 36 = ?",
-    alternativas: ["95", "105", "115", "125"],
-    correta: 1
+    alternativas: ["115", "95", "125", "105"],
+    correta: 3
   },
 
   {
     tipo: "Somar",
     pergunta: "74 + 48 + 82 = ?",
-    alternativas: ["194", "204", "214", "224"],
+    alternativas: ["214", "204", "224", "194"],
     correta: 1
   },
 
   {
     tipo: "Somar",
     pergunta: "92 + 13 + 58 = ?",
-    alternativas: ["153", "163", "173", "183"],
-    correta: 1
+    alternativas: ["173", "183", "163", "153"],
+    correta: 2
   },
 
   {
     tipo: "Somar",
     pergunta: "65 + 74 + 49 = ?",
-    alternativas: ["178", "188", "198", "208"],
-    correta: 1
+    alternativas: ["188", "208", "178", "198"],
+    correta: 0
   },
 
   {
     tipo: "Somar",
     pergunta: "16 + 87 + 57 = ?",
-    alternativas: ["150", "160", "170", "180"],
-    correta: 1
+    alternativas: ["170", "150", "180", "160"],
+    correta: 3
   },
 
   {
     tipo: "Somar",
     pergunta: "67 + 23 + 86 = ?",
-    alternativas: ["166", "176", "186", "196"],
+    alternativas: ["196", "176", "166", "186"],
     correta: 1
   },
 
   {
     tipo: "Somar",
     pergunta: "27 + 18 + 44 = ?",
-    alternativas: ["79", "89", "99", "109"],
-    correta: 1
+    alternativas: ["99", "109", "89", "79"],
+    correta: 2
   },
 
   {
     tipo: "Somar",
     pergunta: "66 + 87 + 34 = ?",
-    alternativas: ["177", "187", "197", "207"],
-    correta: 1
+    alternativas: ["207", "177", "197", "187"],
+    correta: 3
   },
 
   {
     tipo: "Somar",
     pergunta: "55 + 74 + 19 = ?",
-    alternativas: ["138", "148", "158", "168"],
+    alternativas: ["158", "148", "168", "138"],
     correta: 1
   },
 
   {
     tipo: "Somar",
     pergunta: "88 + 13 + 71 = ?",
-    alternativas: ["162", "172", "182", "192"],
+    alternativas: ["192", "172", "162", "182"],
     correta: 1
   },
 
   {
     tipo: "Somar",
     pergunta: "95 + 21 + 92 = ?",
-    alternativas: ["198", "208", "218", "228"],
-    correta: 1
+    alternativas: ["228", "198", "218", "208"],
+    correta: 3
   },
 
   {
     tipo: "Somar",
     pergunta: "32 + 99 + 75 = ?",
-    alternativas: ["196", "206", "216", "226"],
-    correta: 1
+    alternativas: ["206", "226", "216", "196"],
+    correta: 0
   },
 
   {
     tipo: "Somar",
     pergunta: "49 + 61 + 83 = ?",
-    alternativas: ["183", "193", "203", "213"],
-    correta: 1
+    alternativas: ["213", "203", "193", "183"],
+    correta: 2
   },
 
   {
     tipo: "Somar",
     pergunta: "95 + 59 + 93 = ?",
-    alternativas: ["237", "247", "257", "267"],
-    correta: 1
+    alternativas: ["257", "267", "237", "247"],
+    correta: 3
   },
 
   {
     tipo: "Somar",
     pergunta: "71 + 25 + 63 = ?",
-    alternativas: ["149", "159", "169", "179"],
-    correta: 1
+    alternativas: ["159", "149", "179", "169"],
+    correta: 0
   },
 
   {
     tipo: "Somar",
     pergunta: "63 + 71 + 45 = ?",
-    alternativas: ["169", "179", "189", "199"],
-    correta: 1
+    alternativas: ["199", "169", "189", "179"],
+    correta: 3
   },
 
   {
     tipo: "Somar",
     pergunta: "47 + 84 + 28 = ?",
-    alternativas: ["149", "159", "169", "179"],
-    correta: 1
+    alternativas: ["169", "149", "179", "159"],
+    correta: 3
   },
 
   {
     tipo: "Somar",
     pergunta: "19 + 27 + 43 = ?",
-    alternativas: ["79", "89", "99", "109"],
+    alternativas: ["89", "79", "109", "99"],
     correta: 1
   },
 
   {
     tipo: "Somar",
     pergunta: "34 + 92 + 26 = ?",
-    alternativas: ["142", "152", "162", "172"],
+    alternativas: ["162", "152", "142", "172"],
     correta: 1
   },
 
   {
     tipo: "Somar",
     pergunta: "67 + 86 + 35 = ?",
-    alternativas: ["178", "188", "198", "208"],
-    correta: 1
+    alternativas: ["198", "208", "178", "188"],
+    correta: 3
   },
 
   {
     tipo: "Somar",
     pergunta: "19 + 68 + 77 = ?",
-    alternativas: ["154", "164", "174", "184"],
-    correta: 1
+    alternativas: ["174", "184", "154", "164"],
+    correta: 3
   },
 
   {
     tipo: "Somar",
     pergunta: "82 + 36 + 49 = ?",
-    alternativas: ["157", "167", "177", "187"],
+    alternativas: ["187", "167", "177", "157"],
     correta: 1
   },
 
   {
     tipo: "Somar",
     pergunta: "91 + 13 + 38 = ?",
-    alternativas: ["132", "142", "152", "162"],
-    correta: 1
+    alternativas: ["152", "132", "162", "142"],
+    correta: 3
   },
 
   {
     tipo: "Somar",
     pergunta: "63 + 21 + 75 = ?",
-    alternativas: ["149", "159", "169", "179"],
+    alternativas: ["169", "159", "179", "149"],
     correta: 1
   },
 
 
-  /* ================================
-     MULTIPLICAR - 26 a 40
-     ================================= */
+  /* ==========================================
+     MULTIPLICAR
+     ========================================== */
 
   {
     tipo: "Multiplicar",
     pergunta: "3.314 × 2 = ?",
-    alternativas: ["6.528", "6.628", "6.728", "6.828"],
-    correta: 1
+    alternativas: ["6.628", "6.828", "6.528", "6.728"],
+    correta: 0
   },
 
   {
     tipo: "Multiplicar",
     pergunta: "5.042 × 3 = ?",
-    alternativas: ["15.026", "15.126", "15.226", "15.326"],
-    correta: 1
+    alternativas: ["15.326", "15.026", "15.226", "15.126"],
+    correta: 3
   },
 
   {
     tipo: "Multiplicar",
     pergunta: "8.542 × 4 = ?",
-    alternativas: ["33.168", "34.168", "35.168", "36.168"],
+    alternativas: ["35.168", "34.168", "36.168", "33.168"],
     correta: 1
   },
 
   {
     tipo: "Multiplicar",
     pergunta: "6.273 × 7 = ?",
-    alternativas: ["42.911", "43.911", "44.911", "45.911"],
-    correta: 1
+    alternativas: ["45.911", "42.911", "44.911", "43.911"],
+    correta: 3
   },
 
   {
     tipo: "Multiplicar",
     pergunta: "8.056 × 9 = ?",
-    alternativas: ["71.504", "72.504", "73.504", "74.504"],
+    alternativas: ["73.504", "72.504", "71.504", "74.504"],
     correta: 1
   },
 
   {
     tipo: "Multiplicar",
     pergunta: "1.976 × 6 = ?",
-    alternativas: ["11.756", "11.856", "11.956", "12.056"],
-    correta: 1
+    alternativas: ["11.856", "12.056", "11.756", "11.956"],
+    correta: 0
   },
 
   {
     tipo: "Multiplicar",
     pergunta: "5.062 × 5 = ?",
-    alternativas: ["24.310", "25.310", "26.310", "27.310"],
+    alternativas: ["26.310", "25.310", "27.310", "24.310"],
     correta: 1
   },
 
   {
     tipo: "Multiplicar",
     pergunta: "2.671 × 8 = ?",
-    alternativas: ["20.368", "21.368", "22.368", "23.368"],
-    correta: 1
+    alternativas: ["22.368", "23.368", "21.368", "20.368"],
+    correta: 2
   },
 
   {
     tipo: "Multiplicar",
     pergunta: "3.892 × 6 = ?",
-    alternativas: ["22.352", "23.352", "24.352", "25.352"],
+    alternativas: ["24.352", "23.352", "22.352", "25.352"],
     correta: 1
   },
 
   {
     tipo: "Multiplicar",
     pergunta: "8.709 × 7 = ?",
-    alternativas: ["59.963", "60.963", "61.963", "62.963"],
-    correta: 1
+    alternativas: ["61.963", "59.963", "62.963", "60.963"],
+    correta: 3
   },
 
   {
     tipo: "Multiplicar",
     pergunta: "4.976 × 4 = ?",
-    alternativas: ["18.904", "19.904", "20.904", "21.904"],
-    correta: 1
+    alternativas: ["20.904", "18.904", "21.904", "19.904"],
+    correta: 3
   },
 
   {
     tipo: "Multiplicar",
     pergunta: "1.892 × 9 = ?",
-    alternativas: ["16.028", "17.028", "18.028", "19.028"],
+    alternativas: ["18.028", "17.028", "16.028", "19.028"],
     correta: 1
   },
 
   {
     tipo: "Multiplicar",
     pergunta: "2.764 × 5 = ?",
-    alternativas: ["12.820", "13.820", "14.820", "15.820"],
-    correta: 1
+    alternativas: ["14.820", "12.820", "15.820", "13.820"],
+    correta: 3
   },
 
   {
     tipo: "Multiplicar",
     pergunta: "3.158 × 8 = ?",
-    alternativas: ["24.264", "25.264", "26.264", "27.264"],
+    alternativas: ["26.264", "25.264", "27.264", "24.264"],
     correta: 1
   },
 
   {
     tipo: "Multiplicar",
     pergunta: "9.246 × 9 = ?",
-    alternativas: ["81.214", "82.214", "83.214", "84.214"],
-    correta: 2
+    alternativas: ["84.214", "83.214", "82.214", "81.214"],
+    correta: 1
   }
 
 ];
@@ -597,6 +667,7 @@ async function iniciarTeste() {
   const campoNome =
     document.getElementById("nome");
 
+
   nome =
     campoNome.value.trim();
 
@@ -608,6 +679,7 @@ async function iniciarTeste() {
     );
 
     return;
+
   }
 
 
@@ -615,6 +687,7 @@ async function iniciarTeste() {
     document.getElementById(
       "botaoIniciar"
     );
+
 
   botao.disabled = true;
 
@@ -626,9 +699,6 @@ async function iniciarTeste() {
 
   try {
 
-    /* -----------------------------------------------
-       1. CADASTRA O CANDIDATO
-       ----------------------------------------------- */
 
     const respostaCandidato =
       await fetch(
@@ -638,18 +708,28 @@ async function iniciarTeste() {
           method: "POST",
 
           headers: {
-            "apikey": SUPABASE_KEY,
+
+            "apikey":
+              SUPABASE_KEY,
+
             "Authorization":
-              "Bearer " + SUPABASE_KEY,
+              "Bearer " +
+              SUPABASE_KEY,
+
             "Content-Type":
               "application/json",
+
             "Prefer":
               "return=representation"
+
           },
 
           body: JSON.stringify({
+
             name: nome
+
           })
+
         }
       );
 
@@ -672,10 +752,13 @@ async function iniciarTeste() {
 
     let dadosCandidato;
 
+
     try {
 
       dadosCandidato =
-        JSON.parse(textoCandidato);
+        JSON.parse(
+          textoCandidato
+        );
 
     } catch (e) {
 
@@ -687,7 +770,9 @@ async function iniciarTeste() {
 
 
     if (
-      !Array.isArray(dadosCandidato) ||
+      !Array.isArray(
+        dadosCandidato
+      ) ||
       dadosCandidato.length === 0
     ) {
 
@@ -702,10 +787,6 @@ async function iniciarTeste() {
       dadosCandidato[0].id;
 
 
-    /* -----------------------------------------------
-       2. CRIA A TENTATIVA
-       ----------------------------------------------- */
-
     mostrarMensagem(
       "Criando tentativa..."
     );
@@ -719,13 +800,20 @@ async function iniciarTeste() {
           method: "POST",
 
           headers: {
-            "apikey": SUPABASE_KEY,
+
+            "apikey":
+              SUPABASE_KEY,
+
             "Authorization":
-              "Bearer " + SUPABASE_KEY,
+              "Bearer " +
+              SUPABASE_KEY,
+
             "Content-Type":
               "application/json",
+
             "Prefer":
               "return=representation"
+
           },
 
           body: JSON.stringify({
@@ -737,6 +825,7 @@ async function iniciarTeste() {
               40
 
           })
+
         }
       );
 
@@ -759,10 +848,13 @@ async function iniciarTeste() {
 
     let dadosTentativa;
 
+
     try {
 
       dadosTentativa =
-        JSON.parse(textoTentativa);
+        JSON.parse(
+          textoTentativa
+        );
 
     } catch (e) {
 
@@ -774,7 +866,9 @@ async function iniciarTeste() {
 
 
     if (
-      !Array.isArray(dadosTentativa) ||
+      !Array.isArray(
+        dadosTentativa
+      ) ||
       dadosTentativa.length === 0
     ) {
 
@@ -788,10 +882,6 @@ async function iniciarTeste() {
     tentativaId =
       dadosTentativa[0].id;
 
-
-    /* -----------------------------------------------
-       3. COMEÇA O TESTE
-       ----------------------------------------------- */
 
     document.getElementById(
       "inicio"
@@ -826,7 +916,9 @@ async function iniciarTeste() {
 
   } catch (erro) {
 
-    console.error(erro);
+    console.error(
+      erro
+    );
 
 
     alert(
@@ -834,7 +926,8 @@ async function iniciarTeste() {
     );
 
 
-    botao.disabled = false;
+    botao.disabled =
+      false;
 
 
     mostrarMensagem(
@@ -853,14 +946,18 @@ async function iniciarTeste() {
 function mostrarQuestao() {
 
   const questao =
-    questoes[questaoAtual];
+    questoes[
+      questaoAtual
+    ];
 
 
   document.getElementById(
     "numeroQuestao"
   ).textContent =
     "Questão " +
-    (questaoAtual + 1) +
+    (
+      questaoAtual + 1
+    ) +
     " de 40";
 
 
@@ -922,7 +1019,10 @@ function mostrarQuestao() {
 
 
   const percentual =
-    ((questaoAtual + 1) / 40) *
+    (
+      (questaoAtual + 1) /
+      40
+    ) *
     100;
 
 
@@ -957,7 +1057,9 @@ function proximaQuestao() {
   }
 
 
-  respostas[questaoAtual] =
+  respostas[
+    questaoAtual
+  ] =
     Number(
       selecionada.value
     );
@@ -1001,12 +1103,16 @@ function atualizarCronometro() {
   document.getElementById(
     "cronometro"
   ).textContent =
-    String(minutos).padStart(
+    String(
+      minutos
+    ).padStart(
       2,
       "0"
     ) +
     ":" +
-    String(segundos).padStart(
+    String(
+      segundos
+    ).padStart(
       2,
       "0"
     );
@@ -1045,8 +1151,6 @@ async function finalizarTeste() {
   }
 
 
-  /* CALCULA OS ACERTOS */
-
   let acertos = 0;
 
 
@@ -1058,7 +1162,9 @@ async function finalizarTeste() {
 
       if (
         resposta ===
-        questoes[indice].correta
+        questoes[
+          indice
+        ].correta
       ) {
 
         acertos++;
@@ -1068,10 +1174,6 @@ async function finalizarTeste() {
     }
   );
 
-
-  /* -----------------------------------------------
-     ATUALIZA A TENTATIVA
-     ----------------------------------------------- */
 
   if (tentativaId) {
 
@@ -1088,6 +1190,7 @@ async function finalizarTeste() {
             method: "PATCH",
 
             headers: {
+
               "apikey":
                 SUPABASE_KEY,
 
@@ -1097,6 +1200,7 @@ async function finalizarTeste() {
 
               "Content-Type":
                 "application/json"
+
             },
 
             body: JSON.stringify({
@@ -1109,6 +1213,7 @@ async function finalizarTeste() {
                   .toISOString()
 
             })
+
           }
         );
 
@@ -1134,10 +1239,6 @@ async function finalizarTeste() {
   }
 
 
-  /* -----------------------------------------------
-     MOSTRA TELA FINAL
-     ----------------------------------------------- */
-
   document.getElementById(
     "teste"
   ).style.display =
@@ -1156,7 +1257,9 @@ async function finalizarTeste() {
    MENSAGEM
    ===================================================== */
 
-function mostrarMensagem(texto) {
+function mostrarMensagem(
+  texto
+) {
 
   document.getElementById(
     "mensagem"
@@ -1167,5 +1270,7 @@ function mostrarMensagem(texto) {
 
 </script>
 
+
 </body>
+
 </html>
